@@ -1,4 +1,4 @@
-#ifndef SOUNDSCENE_H
+п»ї#ifndef SOUNDSCENE_H
 #define SOUNDSCENE_H
 
 #include "DiffractionPropagation.h"
@@ -9,18 +9,18 @@
 #include "SoundPhongPathPoint.h"
 #include <cstdio>
 
-// для расчёта нормалей к полигону мэша
+// РґР»СЏ СЂР°СЃС‡С‘С‚Р° РЅРѕСЂРјР°Р»РµР№ Рє РїРѕР»РёРіРѕРЅСѓ РјСЌС€Р°
 #include <CGAL/Polygon_mesh_processing/compute_normal.h>
 
-// для нахождения пересечений с мэшем
+// РґР»СЏ РЅР°С…РѕР¶РґРµРЅРёСЏ РїРµСЂРµСЃРµС‡РµРЅРёР№ СЃ РјСЌС€РµРј
 #include <CGAL/AABB_tree.h>
 #include <CGAL/AABB_traits.h>
 #include <CGAL/AABB_face_graph_triangle_primitive.h>
 
-// для нахождения границ мэша
+// РґР»СЏ РЅР°С…РѕР¶РґРµРЅРёСЏ РіСЂР°РЅРёС† РјСЌС€Р°
 #include <CGAL/Polygon_mesh_processing/bbox.h>
 
-// для нахождения пересечений с мэшем
+// РґР»СЏ РЅР°С…РѕР¶РґРµРЅРёСЏ РїРµСЂРµСЃРµС‡РµРЅРёР№ СЃ РјСЌС€РµРј
 typedef Kernel::Ray_3 Ray;
 typedef CGAL::AABB_face_graph_triangle_primitive<Mesh> Primitive;
 typedef CGAL::AABB_traits<Kernel, Primitive> Traits;
@@ -40,11 +40,11 @@ typedef boost::optional<Tree::Intersection_and_primitive_id<Ray>::Type> Ray_inte
 class SoundScene
 {
 public:
-	// сетка сцены
+	// СЃРµС‚РєР° СЃС†РµРЅС‹
 	Mesh mesh;
 	bool is_2d = false;
 
-	// для быстрого поиска пересечения с объетками сцены
+	// РґР»СЏ Р±С‹СЃС‚СЂРѕРіРѕ РїРѕРёСЃРєР° РїРµСЂРµСЃРµС‡РµРЅРёСЏ СЃ РѕР±СЉРµС‚РєР°РјРё СЃС†РµРЅС‹
 	Tree face_tree;
 
 	SoundScene();
@@ -53,7 +53,7 @@ public:
 	bool saveMeshFromFile(std::string filename);
 
 	//////////////////////////////////
-	// Всякие вспомогательные константы
+	// Р’СЃСЏРєРёРµ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ РєРѕРЅСЃС‚Р°РЅС‚С‹
 	//////////////////////////////////
 
 	unsigned num_frequencies = 3;
@@ -64,7 +64,7 @@ public:
 	double min_diffraction_edge_angle = 0.5;
 	double diffraction_threshold = std::abs(std::cos(degreesToRadians(mod(min_diffraction_edge_angle, 90.))));
 
-	// просто я взял из головы
+	// РїСЂРѕСЃС‚Рѕ СЏ РІР·СЏР» РёР· РіРѕР»РѕРІС‹
 	double big_diffraction_edge_cos_angle_threshold = 0.95;
 	double diffaction_wedge_variation_threshold = 0.95;
 	double diffaction_cos_face_normal_variation_threshold = 0.95;
@@ -77,7 +77,7 @@ public:
 	double ray_direction_threshold = 0.001;
 
 	double ray_offset = 0.0001;
-	// максимально допустимая длительность полученного импульса
+	// РјР°РєСЃРёРјР°Р»СЊРЅРѕ РґРѕРїСѓСЃС‚РёРјР°СЏ РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ РїРѕР»СѓС‡РµРЅРЅРѕРіРѕ РёРјРїСѓР»СЊСЃР°
 	double max_IR_length = 0.1;
 
 	double speed_of_sound = 343.99;
@@ -93,113 +93,113 @@ public:
 	double epsilon_f = 0.01;
 
 	//////////////////////////////////
-	// Материал
+	// РњР°С‚РµСЂРёР°Р»
 	//////////////////////////////////
 
 	std::vector<SoundMaterial> materials_list;
 
-	// разметка материалов поверхности
+	// СЂР°Р·РјРµС‚РєР° РјР°С‚РµСЂРёР°Р»РѕРІ РїРѕРІРµСЂС…РЅРѕСЃС‚Рё
 	 Mesh::Property_map<face_descriptor, unsigned> faces_material_map;
 
 	bool mapMaterials();
 
 	//////////////////////////////////
-	// Дифр рёбра
+	// Р”РёС„СЂ СЂС‘Р±СЂР°
 	//////////////////////////////////
 
-	// разметка, какие ребра могут дифрагировать
+	// СЂР°Р·РјРµС‚РєР°, РєР°РєРёРµ СЂРµР±СЂР° РјРѕРіСѓС‚ РґРёС„СЂР°РіРёСЂРѕРІР°С‚СЊ
 	Mesh::Property_map<halfedge_descriptor, bool> diffr_map;
-	// количество юольших дифр рёбр
+	// РєРѕР»РёС‡РµСЃС‚РІРѕ СЋРѕР»СЊС€РёС… РґРёС„СЂ СЂС‘Р±СЂ
 	unsigned total_num_edges;
-	// Граф видимости дифр рёбер
+	// Р“СЂР°С„ РІРёРґРёРјРѕСЃС‚Рё РґРёС„СЂ СЂС‘Р±РµСЂ
 	DiffractionEdgeGraph diffr_edge_graph;
-	// окраска смежных дифрагирующих рёбер в общий цвет
+	// РѕРєСЂР°СЃРєР° СЃРјРµР¶РЅС‹С… РґРёС„СЂР°РіРёСЂСѓСЋС‰РёС… СЂС‘Р±РµСЂ РІ РѕР±С‰РёР№ С†РІРµС‚
 	Mesh::Property_map<halfedge_descriptor, unsigned> halfedge_col_map;
-	// помечаем дифр рёбра
+	// РїРѕРјРµС‡Р°РµРј РґРёС„СЂ СЂС‘Р±СЂР°
 	bool markDiffractionEdges();
-	// объединяем вместе в одно большие (окраска)
+	// РѕР±СЉРµРґРёРЅСЏРµРј РІРјРµСЃС‚Рµ РІ РѕРґРЅРѕ Р±РѕР»СЊС€РёРµ (РѕРєСЂР°СЃРєР°)
 	bool combineDiffractionEdges();
-	// построение графа видимости
+	// РїРѕСЃС‚СЂРѕРµРЅРёРµ РіСЂР°С„Р° РІРёРґРёРјРѕСЃС‚Рё
 	void buildDiffractionEdgeGraph();
 
 	//////////////////////////////////
-	// Источник/приёмник
+	// РСЃС‚РѕС‡РЅРёРє/РїСЂРёС‘РјРЅРёРє
 	//////////////////////////////////
 	
-	// источник
+	// РёСЃС‚РѕС‡РЅРёРє
 	PointSoundSource sound_source;
-	// приёмник
+	// РїСЂРёС‘РјРЅРёРє
 	PointSoundListener sound_listener;
 
 	Vector listener_to_source_direction;
 
-	// задать источник
+	// Р·Р°РґР°С‚СЊ РёСЃС‚РѕС‡РЅРёРє
 	void setSoundSource(PointSoundSource new_sound_source);
-	// задать приёмник
+	// Р·Р°РґР°С‚СЊ РїСЂРёС‘РјРЅРёРє
 	void setSoundListener(PointSoundListener new_sound_listener);
-	// получить направление от listener до source
+	// РїРѕР»СѓС‡РёС‚СЊ РЅР°РїСЂР°РІР»РµРЅРёРµ РѕС‚ listener РґРѕ source
 	Vector listenerToSourceDirection();
 
 	double pdfSound(const SoundPhongPathPoint& curr, const SoundPhongPathPoint& next);
 	double pdfListener(const SoundPhongPathPoint& curr, const SoundPhongPathPoint& next);
 
 	//////////////////////////////////
-	// Распространение звука
+	// Р Р°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёРµ Р·РІСѓРєР°
 	//////////////////////////////////
 
-	// затухание от дистанции
+	// Р·Р°С‚СѓС…Р°РЅРёРµ РѕС‚ РґРёСЃС‚Р°РЅС†РёРё
 	double getDistanceAttenuation(double distance);
-	// делаем расчёты, распространяем звук от Source до Listener
+	// РґРµР»Р°РµРј СЂР°СЃС‡С‘С‚С‹, СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅСЏРµРј Р·РІСѓРє РѕС‚ Source РґРѕ Listener
 	void propagateSound();
 
 	//////////////////////////////////
-	// Прямые пути
+	// РџСЂСЏРјС‹Рµ РїСѓС‚Рё
 	//////////////////////////////////
 
 	bool addDirectPath();
 
 	//////////////////////////////////
-	// Пути модели фонга (дифузия + зерк отраж)
+	// РџСѓС‚Рё РјРѕРґРµР»Рё С„РѕРЅРіР° (РґРёС„СѓР·РёСЏ + Р·РµСЂРє РѕС‚СЂР°Р¶)
 	//////////////////////////////////
 
-	// поиск путей модели фонга
+	// РїРѕРёСЃРє РїСѓС‚РµР№ РјРѕРґРµР»Рё С„РѕРЅРіР°
 	bool addSpecularPath(double frequency);
-	// сохраняет путь (начало пути + точки в которых произошло отражение)
-	// (в последней точке произошло отражение, а не затухание луча);
-	// возвращает количество отражений
+	// СЃРѕС…СЂР°РЅСЏРµС‚ РїСѓС‚СЊ (РЅР°С‡Р°Р»Рѕ РїСѓС‚Рё + С‚РѕС‡РєРё РІ РєРѕС‚РѕСЂС‹С… РїСЂРѕРёР·РѕС€Р»Рѕ РѕС‚СЂР°Р¶РµРЅРёРµ)
+	// (РІ РїРѕСЃР»РµРґРЅРµР№ С‚РѕС‡РєРµ РїСЂРѕРёР·РѕС€Р»Рѕ РѕС‚СЂР°Р¶РµРЅРёРµ, Р° РЅРµ Р·Р°С‚СѓС…Р°РЅРёРµ Р»СѓС‡Р°);
+	// РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕР»РёС‡РµСЃС‚РІРѕ РѕС‚СЂР°Р¶РµРЅРёР№
 	int randomWalk(Ray first_ray, std::vector<SoundPhongPathPoint>& path,
 		int max_depth, double pdf, double beta, double frequency);
-	// подсчитать вес MIS (Multy Importance Sampling)
+	// РїРѕРґСЃС‡РёС‚Р°С‚СЊ РІРµСЃ MIS (Multy Importance Sampling)
 	double calcMISWeight(std::vector<SoundPhongPathPoint> source_path, std::vector<SoundPhongPathPoint> listener_path, int s, int t);
 
 	//////////////////////////////////
-	// Дифр пути
+	// Р”РёС„СЂ РїСѓС‚Рё
 	//////////////////////////////////
 
-	// поиск дифр пути
+	// РїРѕРёСЃРє РґРёС„СЂ РїСѓС‚Рё
 	bool addDiffractionPath(Vector ray_direction, Ray_intersection intersection);
-	// рекурсивный поиск дифр пути
+	// СЂРµРєСѓСЂСЃРёРІРЅС‹Р№ РїРѕРёСЃРє РґРёС„СЂ РїСѓС‚Рё
 	bool recursiveDiffraction(ImpulseResponse& curr_IR, const BigDiffractionEdge& diffr_edge, unsigned depth);
-	// находит точку на первой оси наиболее близкую ко второй оси
+	// РЅР°С…РѕРґРёС‚ С‚РѕС‡РєСѓ РЅР° РїРµСЂРІРѕР№ РѕСЃРё РЅР°РёР±РѕР»РµРµ Р±Р»РёР·РєСѓСЋ РєРѕ РІС‚РѕСЂРѕР№ РѕСЃРё
 	double computePointOfClosestApproach(Point p1, Vector v1, Point p2, Vector v2);
-	// проверка есть ли путь начин с ребра данного цвета
+	// РїСЂРѕРІРµСЂРєР° РµСЃС‚СЊ Р»Рё РїСѓС‚СЊ РЅР°С‡РёРЅ СЃ СЂРµР±СЂР° РґР°РЅРЅРѕРіРѕ С†РІРµС‚Р°
 	bool alreadyContainsPath(unsigned diffr_edge_col);
 
 	//////////////////////////////////
-	// Флаги
+	// Р¤Р»Р°РіРё
 	//////////////////////////////////
 	
-	// размер флага
+	// СЂР°Р·РјРµСЂ С„Р»Р°РіР°
 	double d_flag = 1.;
-	// диффр флаг или нет
+	// РґРёС„С„СЂ С„Р»Р°Рі РёР»Рё РЅРµС‚
 	Mesh::Property_map<face_descriptor, unsigned> faces_flag_map;
-	// добавить в сетки геометрию флагов
+	// РґРѕР±Р°РІРёС‚СЊ РІ СЃРµС‚РєРё РіРµРѕРјРµС‚СЂРёСЋ С„Р»Р°РіРѕРІ
 	bool addDiffractionFlags();
 
 	class DiffractionQuery;
 
 	//////////////////////////////////
-	// Вспомогателььные методы
+	// Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊСЊРЅС‹Рµ РјРµС‚РѕРґС‹
 	//////////////////////////////////
 	void setFrequencies(unsigned new_num_frequencies);
 	void getSceneBoundingBox(Point& min_point, Point& max_point);
@@ -207,7 +207,7 @@ public:
 	bool isBackSideVisible(const Point& point);
 
 	//////////////////////////////////
-	// Дополнительно для графики
+	// Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕ РґР»СЏ РіСЂР°С„РёРєРё
 	//////////////////////////////////
 
 	void addArrow(Point start, Point end);
@@ -217,7 +217,7 @@ public:
 	void removeLastArrow();
 
 	//////////////////////////////////
-	// Сохранение и загрузка
+	// РЎРѕС…СЂР°РЅРµРЅРёРµ Рё Р·Р°РіСЂСѓР·РєР°
 	//////////////////////////////////
 	std::string readInputFilename();
 	std::string createOutputFilename(std::string input_filename);
@@ -241,7 +241,7 @@ public:
 	void clearSavedIRs(std::string filename);
 
 	//////////////////////////////////
-	// Анализ результатов
+	// РђРЅР°Р»РёР· СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ
 	//////////////////////////////////
 	
 	std::vector<double> calculateAverageEnergyPerStep(const std::vector<std::pair<double, double>>& received_phong_IRs_archived, double dt);
@@ -249,9 +249,9 @@ public:
 
 struct FlagSkip
 {
-	// скипать дифр флаги или нет
+	// СЃРєРёРїР°С‚СЊ РґРёС„СЂ С„Р»Р°РіРё РёР»Рё РЅРµС‚
 	bool skip_flags = false;
-	// дополнительное поля для скипаемой поверхности (не флаг), если надо
+	// РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕРµ РїРѕР»СЏ РґР»СЏ СЃРєРёРїР°РµРјРѕР№ РїРѕРІРµСЂС…РЅРѕСЃС‚Рё (РЅРµ С„Р»Р°Рі), РµСЃР»Рё РЅР°РґРѕ
 	face_descriptor fd;
 	const SoundScene& scene;
 	FlagSkip(const SoundScene& scene)
@@ -269,15 +269,15 @@ struct FlagSkip
 	}
 	bool operator()(const face_descriptor& t) const
 	{
-		// проверяем, является пересечёенная пов-сть флагом
+		// РїСЂРѕРІРµСЂСЏРµРј, СЏРІР»СЏРµС‚СЃСЏ РїРµСЂРµСЃРµС‡С‘РµРЅРЅР°СЏ РїРѕРІ-СЃС‚СЊ С„Р»Р°РіРѕРј
 		if (scene.faces_flag_map[t] > 0)
 		{
 			return skip_flags;
 		}
-		// проверяем (есть ли не флаг) нужно ли скипать эту пов-сть
+		// РїСЂРѕРІРµСЂСЏРµРј (РµСЃС‚СЊ Р»Рё РЅРµ С„Р»Р°Рі) РЅСѓР¶РЅРѕ Р»Рё СЃРєРёРїР°С‚СЊ СЌС‚Сѓ РїРѕРІ-СЃС‚СЊ
 		if (fd == Mesh::null_face())
 		{
-			// скипаемой пов-сти нет
+			// СЃРєРёРїР°РµРјРѕР№ РїРѕРІ-СЃС‚Рё РЅРµС‚
 			return false;
 		}
 		return (t == fd);

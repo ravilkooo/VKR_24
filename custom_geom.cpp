@@ -1,7 +1,7 @@
-#include <CGAL/Simple_cartesian.h>
+п»ї#include <CGAL/Simple_cartesian.h>
 #include <CGAL/Surface_mesh.h>
 
-// Для рисования
+// Р”Р»СЏ СЂРёСЃРѕРІР°РЅРёСЏ
 #include <CGAL/draw_surface_mesh.h>
 #include <fstream>
 #include <locale>
@@ -55,12 +55,12 @@ int custom_geom(int argc, char* argv[])
 
 	if (answer != "y")
 	{
-		// помечаем диффр рёбра
+		// РїРѕРјРµС‡Р°РµРј РґРёС„С„СЂ СЂС‘Р±СЂР°
 		scene.markDiffractionEdges();
 
-		// объединяем вместе в одно большие
+		// РѕР±СЉРµРґРёРЅСЏРµРј РІРјРµСЃС‚Рµ РІ РѕРґРЅРѕ Р±РѕР»СЊС€РёРµ
 		scene.combineDiffractionEdges();
-		// сохраняем
+		// СЃРѕС…СЂР°РЅСЏРµРј
 		scene.saveDiffractionEdges(scene_name);
 
 		std::cout << scene.diffr_edge_graph.edges.size() << "\n";
@@ -68,16 +68,16 @@ int custom_geom(int argc, char* argv[])
 		// Draw!
 		// CGAL::draw(scene.mesh);
 
-		// построение графа видимости рёбер
+		// РїРѕСЃС‚СЂРѕРµРЅРёРµ РіСЂР°С„Р° РІРёРґРёРјРѕСЃС‚Рё СЂС‘Р±РµСЂ
 		std::cout << "buildDiffractionEdgeGraph\n";
 		scene.buildDiffractionEdgeGraph();
 
-		// сохраняем
+		// СЃРѕС…СЂР°РЅСЏРµРј
 		scene.saveDiffractionEdgeGraph(scene_name);
 	}
 	else
 	{
-		// подгружаем
+		// РїРѕРґРіСЂСѓР¶Р°РµРј
 		scene.loadDiffractionEdges(scene_name);
 		scene.loadDiffractionEdgeGraph(scene_name);
 	}
@@ -86,10 +86,10 @@ int custom_geom(int argc, char* argv[])
 
 	double min_diffraction_edge_length = 0.5;
 
-	// просто я взял из головы
+	// РїСЂРѕСЃС‚Рѕ СЏ РІР·СЏР» РёР· РіРѕР»РѕРІС‹
 	double diffaction_flag_dir_variation_threshold = 0.95;
 
-	// для проверки
+	// РґР»СЏ РїСЂРѕРІРµСЂРєРё
 	std::cout << scene.diffr_edge_graph.edges.size() << "; "
 		<< scene.diffr_edge_graph.diffr_edge_neighbors.size() << "\n";
 

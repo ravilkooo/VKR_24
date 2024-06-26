@@ -1,6 +1,6 @@
-#include "SoundScene.h"
+п»ї#include "SoundScene.h"
 
-// Для рисования
+// Р”Р»СЏ СЂРёСЃРѕРІР°РЅРёСЏ
 #include <CGAL/draw_surface_mesh.h>
 
 SoundScene::SoundScene()
@@ -31,7 +31,7 @@ bool SoundScene::saveMeshFromFile(std::string filename)
 }
 
 //////////////////////////////////
-// Материал
+// РњР°С‚РµСЂРёР°Р»
 //////////////////////////////////
 
 bool SoundScene::mapMaterials()
@@ -49,7 +49,7 @@ bool SoundScene::mapMaterials()
 }
 
 //////////////////////////////////
-// Дифр рёбра
+// Р”РёС„СЂ СЂС‘Р±СЂР°
 //////////////////////////////////
 
 bool SoundScene::markDiffractionEdges()
@@ -60,18 +60,18 @@ bool SoundScene::markDiffractionEdges()
 	if (!created)
 		return false;
 
-	// 1. проходимся по треугольникам (fd - i)
+	// 1. РїСЂРѕС…РѕРґРёРјСЃСЏ РїРѕ С‚СЂРµСѓРіРѕР»СЊРЅРёРєР°Рј (fd - i)
 	for (face_descriptor fd : mesh.faces())
 	{
 
-		// 2. проходимся по полурёбрам (hed) треугольника (fd)
+		// 2. РїСЂРѕС…РѕРґРёРјСЃСЏ РїРѕ РїРѕР»СѓСЂС‘Р±СЂР°Рј (hed) С‚СЂРµСѓРіРѕР»СЊРЅРёРєР° (fd)
 		for (halfedge_descriptor hed : mesh.halfedges_around_face(mesh.halfedge(fd)))
 		{
-			// соседние треугольнки через данное ребро (hed/opp_hed)
+			// СЃРѕСЃРµРґРЅРёРµ С‚СЂРµСѓРіРѕР»СЊРЅРєРё С‡РµСЂРµР· РґР°РЅРЅРѕРµ СЂРµР±СЂРѕ (hed/opp_hed)
 			halfedge_descriptor opposite_hed = mesh.opposite(hed);
 			face_descriptor neighbor_fd = mesh.face(opposite_hed);
 
-			// нужно отсеять "бесконечную грань" (граничные рёбра)
+			// РЅСѓР¶РЅРѕ РѕС‚СЃРµСЏС‚СЊ "Р±РµСЃРєРѕРЅРµС‡РЅСѓСЋ РіСЂР°РЅСЊ" (РіСЂР°РЅРёС‡РЅС‹Рµ СЂС‘Р±СЂР°)
 			if (neighbor_fd == Mesh::null_face())
 				continue;
 
@@ -83,7 +83,7 @@ bool SoundScene::markDiffractionEdges()
 			vertex_descriptor v1 = mesh.target(hed);
 			vertex_descriptor v2 = mesh.target(opposite_hed);
 
-			// Получаем вершины напротив рёбер
+			// РџРѕР»СѓС‡Р°РµРј РІРµСЂС€РёРЅС‹ РЅР°РїСЂРѕС‚РёРІ СЂС‘Р±РµСЂ
 			vertex_descriptor free1 = mesh.target(mesh.next(hed));
 			vertex_descriptor free2 = mesh.target(mesh.next(opposite_hed));
 
@@ -92,7 +92,7 @@ bool SoundScene::markDiffractionEdges()
 
 			Vector vec_1to2 = mesh.point(free2) - mesh.point(free1);
 
-			// Скипаем вогнутый угол
+			// РЎРєРёРїР°РµРј РІРѕРіРЅСѓС‚С‹Р№ СѓРіРѕР»
 			if (normal1 * vec_1to2 > 0 || normal2 * vec_1to2 < 0)
 				continue;
 
@@ -108,8 +108,8 @@ bool SoundScene::markDiffractionEdges()
 
 bool SoundScene::combineDiffractionEdges()
 {
-	// 0 - не окрашено
-	// > 0 - окрашено
+	// 0 - РЅРµ РѕРєСЂР°С€РµРЅРѕ
+	// > 0 - РѕРєСЂР°С€РµРЅРѕ
 	bool created;
 	boost::tie(halfedge_col_map, created) = mesh.add_property_map<halfedge_descriptor, unsigned>("h:color", 0);
 	assert(created);
@@ -138,7 +138,7 @@ bool SoundScene::combineDiffractionEdges()
 
 		BigDiffractionEdge curr_big_diffr_edge(mesh, vd1, vd2, hed, mesh.opposite(hed), curr_col);
 
-		// думаю нормали нормированны
+		// РґСѓРјР°СЋ РЅРѕСЂРјР°Р»Рё РЅРѕСЂРјРёСЂРѕРІР°РЅРЅС‹
 		Vector normal1_curr = getVectorDirection(CGAL::Polygon_mesh_processing::compute_face_normal(mesh.face(hed), mesh));
 		Vector normal2_curr = getVectorDirection(CGAL::Polygon_mesh_processing::compute_face_normal(mesh.face(mesh.opposite(hed)), mesh));
 		double wedge_curr = std::acos(-1) - std::acos(normal1_curr * normal2_curr);
@@ -147,7 +147,7 @@ bool SoundScene::combineDiffractionEdges()
 		Vector normal2_sum = normal2_curr;
 		double wedge_sum = wedge_curr;
 
-		// продвигаемся вперёд по рёбрам
+		// РїСЂРѕРґРІРёРіР°РµРјСЃСЏ РІРїРµСЂС‘Рґ РїРѕ СЂС‘Р±СЂР°Рј
 		halfedge_descriptor hed_prev = hed;
 		vertex_descriptor vd_prev = vd1;
 		vertex_descriptor vd_curr = vd2;
@@ -167,38 +167,38 @@ bool SoundScene::combineDiffractionEdges()
 				halfedge_descriptor hed_next = *hebegin;
 				hebegin++;
 
-				// скипаем не диффр рёбра
+				// СЃРєРёРїР°РµРј РЅРµ РґРёС„С„СЂ СЂС‘Р±СЂР°
 				if (!diffr_map[hed_next])
 					continue;
 
-				// скипаем ребра того же цвета (на вский случай)
+				// СЃРєРёРїР°РµРј СЂРµР±СЂР° С‚РѕРіРѕ Р¶Рµ С†РІРµС‚Р° (РЅР° РІСЃРєРёР№ СЃР»СѓС‡Р°Р№)
 				if (halfedge_col_map[hed_next] == curr_col)
 					continue;
 
-				// проверяем что vd_curr указывает на начало hed_next
+				// РїСЂРѕРІРµСЂСЏРµРј С‡С‚Рѕ vd_curr СѓРєР°Р·С‹РІР°РµС‚ РЅР° РЅР°С‡Р°Р»Рѕ hed_next
 				if (mesh.target(mesh.opposite(hed_next)) != vd_curr)
 					hed_next = mesh.opposite(hed_next);
 				assert(mesh.target(mesh.opposite(hed_next)) == vd_curr);
 
 				vertex_descriptor vd_next = mesh.target(hed_next);
 
-				// скипаем обратное ребро
+				// СЃРєРёРїР°РµРј РѕР±СЂР°С‚РЅРѕРµ СЂРµР±СЂРѕ
 				if (vd_next == vd_prev)
 					continue;
 
-				// скипаем новое ребро, если образует большой угол с последним
+				// СЃРєРёРїР°РµРј РЅРѕРІРѕРµ СЂРµР±СЂРѕ, РµСЃР»Рё РѕР±СЂР°Р·СѓРµС‚ Р±РѕР»СЊС€РѕР№ СѓРіРѕР» СЃ РїРѕСЃР»РµРґРЅРёРј
 				Vector new_vector = getVectorDirection(mesh.point(vd_next) - mesh.point(vd_curr));
 				if (new_vector * last_vector < big_diffraction_edge_cos_angle_threshold)
 					continue;
 
-				// проверка совпадения клинов
+				// РїСЂРѕРІРµСЂРєР° СЃРѕРІРїР°РґРµРЅРёСЏ РєР»РёРЅРѕРІ
 				Vector normal1_next = getVectorDirection(CGAL::Polygon_mesh_processing::compute_face_normal(mesh.face(hed_next), mesh));
 				Vector normal2_next = getVectorDirection(CGAL::Polygon_mesh_processing::compute_face_normal(mesh.face(mesh.opposite(hed_next)), mesh));
 				double wedge_next = std::acos(-1) - std::acos(normal1_next * normal2_next);
-				// скипаем если угол клина отличается
+				// СЃРєРёРїР°РµРј РµСЃР»Рё СѓРіРѕР» РєР»РёРЅР° РѕС‚Р»РёС‡Р°РµС‚СЃСЏ
 				if (std::abs(wedge_next - wedge_curr) > diffaction_wedge_variation_threshold)
 					continue;
-				// скипаем если ориентация клина отличается
+				// СЃРєРёРїР°РµРј РµСЃР»Рё РѕСЂРёРµРЅС‚Р°С†РёСЏ РєР»РёРЅР° РѕС‚Р»РёС‡Р°РµС‚СЃСЏ
 				if (normal1_next * normal1_curr < diffaction_cos_face_normal_variation_threshold)
 				{
 					Vector _temp = Vector(normal2_next);
@@ -231,7 +231,7 @@ bool SoundScene::combineDiffractionEdges()
 			} while (hebegin != done);
 		}
 
-		// продвигаемся назад по рёбрам
+		// РїСЂРѕРґРІРёРіР°РµРјСЃСЏ РЅР°Р·Р°Рґ РїРѕ СЂС‘Р±СЂР°Рј
 		hed_prev = mesh.opposite(hed);
 		vd_prev = vd2;
 		vd_curr = vd1;
@@ -251,38 +251,38 @@ bool SoundScene::combineDiffractionEdges()
 				halfedge_descriptor hed_next = *hebegin;
 				hebegin++;
 
-				// скипаем не диффр рёбра
+				// СЃРєРёРїР°РµРј РЅРµ РґРёС„С„СЂ СЂС‘Р±СЂР°
 				if (!diffr_map[hed_next])
 					continue;
 
-				// скипаем ребра того же цвета (на вский случай)
+				// СЃРєРёРїР°РµРј СЂРµР±СЂР° С‚РѕРіРѕ Р¶Рµ С†РІРµС‚Р° (РЅР° РІСЃРєРёР№ СЃР»СѓС‡Р°Р№)
 				if (halfedge_col_map[hed_next] == curr_col)
 					continue;
 
-				// проверяем что vd_curr указывает на начало hed_next
+				// РїСЂРѕРІРµСЂСЏРµРј С‡С‚Рѕ vd_curr СѓРєР°Р·С‹РІР°РµС‚ РЅР° РЅР°С‡Р°Р»Рѕ hed_next
 				if (mesh.target(mesh.opposite(hed_next)) != vd_curr)
 					hed_next = mesh.opposite(hed_next);
 				assert(mesh.target(mesh.opposite(hed_next)) == vd_curr);
 
 				vertex_descriptor vd_next = mesh.target(hed_next);
 
-				// скипаем обратное ребро
+				// СЃРєРёРїР°РµРј РѕР±СЂР°С‚РЅРѕРµ СЂРµР±СЂРѕ
 				if (vd_next == vd_prev)
 					continue;
 
-				// скипаем новое ребро, если образует большой угол с последним
+				// СЃРєРёРїР°РµРј РЅРѕРІРѕРµ СЂРµР±СЂРѕ, РµСЃР»Рё РѕР±СЂР°Р·СѓРµС‚ Р±РѕР»СЊС€РѕР№ СѓРіРѕР» СЃ РїРѕСЃР»РµРґРЅРёРј
 				Vector new_vector = getVectorDirection(mesh.point(vd_next) - mesh.point(vd_curr));
 				if (new_vector * last_vector < big_diffraction_edge_cos_angle_threshold)
 					continue;
 
-				// проверка совпадения клинов
+				// РїСЂРѕРІРµСЂРєР° СЃРѕРІРїР°РґРµРЅРёСЏ РєР»РёРЅРѕРІ
 				Vector normal1_next = getVectorDirection(CGAL::Polygon_mesh_processing::compute_face_normal(mesh.face(hed_next), mesh));
 				Vector normal2_next = getVectorDirection(CGAL::Polygon_mesh_processing::compute_face_normal(mesh.face(mesh.opposite(hed_next)), mesh));
 				double wedge_next = std::acos(-1) - std::acos(normal1_next * normal2_next);
-				// скипаем если угол клина отличается
+				// СЃРєРёРїР°РµРј РµСЃР»Рё СѓРіРѕР» РєР»РёРЅР° РѕС‚Р»РёС‡Р°РµС‚СЃСЏ
 				if (std::abs(wedge_next - wedge_curr) > diffaction_wedge_variation_threshold)
 					continue;
-				// скипаем если ориентация клина отличается
+				// СЃРєРёРїР°РµРј РµСЃР»Рё РѕСЂРёРµРЅС‚Р°С†РёСЏ РєР»РёРЅР° РѕС‚Р»РёС‡Р°РµС‚СЃСЏ
 				if (normal1_next * normal1_curr < diffaction_cos_face_normal_variation_threshold)
 				{
 					Vector _temp = Vector(normal2_next);
@@ -321,7 +321,7 @@ bool SoundScene::combineDiffractionEdges()
 		curr_big_diffr_edge.flag_direction = getVectorDirection(curr_big_diffr_edge.normal1 + curr_big_diffr_edge.normal2);
 		diffr_edge_graph.edges.push_back(curr_big_diffr_edge);
 
-		// получается что curr_big_diffr_edge.col совпадает с индексом в diffr_edge_graph.edges
+		// РїРѕР»СѓС‡Р°РµС‚СЃСЏ С‡С‚Рѕ curr_big_diffr_edge.col СЃРѕРІРїР°РґР°РµС‚ СЃ РёРЅРґРµРєСЃРѕРј РІ diffr_edge_graph.edges
 		curr_col++;
 	}
 	total_num_edges = diffr_edge_graph.edges.size();
@@ -366,41 +366,41 @@ void SoundScene::buildDiffractionEdgeGraph()
 
 			for (unsigned i = 0; i < edge1_rays; i++)
 			{
-				// вычисляем точку на первом ребре
+				// РІС‹С‡РёСЃР»СЏРµРј С‚РѕС‡РєСѓ РЅР° РїРµСЂРІРѕРј СЂРµР±СЂРµ
 				Point p1 = edge1.getStart() + edge1_axis * ((i + 1.) / (edge1_rays + 1.));
 				p1 += edge1_offset;
 
-				// если точка не находится в области дифракции второго ребра, пропустить её
+				// РµСЃР»Рё С‚РѕС‡РєР° РЅРµ РЅР°С…РѕРґРёС‚СЃСЏ РІ РѕР±Р»Р°СЃС‚Рё РґРёС„СЂР°РєС†РёРё РІС‚РѕСЂРѕРіРѕ СЂРµР±СЂР°, РїСЂРѕРїСѓСЃС‚РёС‚СЊ РµС‘
 				if (!edge2.testOrientation(p1, 2*epsilon_f /*edge_offset*/))
 					continue;
 
 				for (unsigned j = 0; j < edge2_rays; j++)
 				{
-					// вычисляем точку на втором ребре
+					// РІС‹С‡РёСЃР»СЏРµРј С‚РѕС‡РєСѓ РЅР° РІС‚РѕСЂРѕРј СЂРµР±СЂРµ
 					Point p2 = edge2.getStart() + edge2_axis * ((j + 1.) / (edge2_rays + 1.));
 					p2 += edge2_offset;
 
-					// если точка не находится в области дифракции первого ребра, пропускаем её
+					// РµСЃР»Рё С‚РѕС‡РєР° РЅРµ РЅР°С…РѕРґРёС‚СЃСЏ РІ РѕР±Р»Р°СЃС‚Рё РґРёС„СЂР°РєС†РёРё РїРµСЂРІРѕРіРѕ СЂРµР±СЂР°, РїСЂРѕРїСѓСЃРєР°РµРј РµС‘
 					if (!edge1.testOrientation(p2, 2 * epsilon_f /*edge_offset*/))
 						continue;
 
-					// вычисляем луч и расстояние вдоль луча между точками
+					// РІС‹С‡РёСЃР»СЏРµРј Р»СѓС‡ Рё СЂР°СЃСЃС‚РѕСЏРЅРёРµ РІРґРѕР»СЊ Р»СѓС‡Р° РјРµР¶РґСѓ С‚РѕС‡РєР°РјРё
 					double distance = getVectorLength(p2 - p1);
 
-					// пропускаем этот луч, если точки совпадают
+					// РїСЂРѕРїСѓСЃРєР°РµРј СЌС‚РѕС‚ Р»СѓС‡, РµСЃР»Рё С‚РѕС‡РєРё СЃРѕРІРїР°РґР°СЋС‚
 					if (distance < MATH_EPSILON)
 						continue;
 
 					Vector ray_direction = getVectorDirection(p2 - p1);
 					Ray ray(p1, ray_direction);
 
-					// пропускаем луч, если он направлен в противоположную сторону от нормалей обоих треугольников
-					// это означает, что кандидат на ребре находится вне области дифракции первого ребра
+					// РїСЂРѕРїСѓСЃРєР°РµРј Р»СѓС‡, РµСЃР»Рё РѕРЅ РЅР°РїСЂР°РІР»РµРЅ РІ РїСЂРѕС‚РёРІРѕРїРѕР»РѕР¶РЅСѓСЋ СЃС‚РѕСЂРѕРЅСѓ РѕС‚ РЅРѕСЂРјР°Р»РµР№ РѕР±РѕРёС… С‚СЂРµСѓРіРѕР»СЊРЅРёРєРѕРІ
+					// СЌС‚Рѕ РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ РєР°РЅРґРёРґР°С‚ РЅР° СЂРµР±СЂРµ РЅР°С…РѕРґРёС‚СЃСЏ РІРЅРµ РѕР±Р»Р°СЃС‚Рё РґРёС„СЂР°РєС†РёРё РїРµСЂРІРѕРіРѕ СЂРµР±СЂР°
 					if ((ray_direction * edge1.normal1) < -ray_direction_threshold &&
 						(ray_direction * edge1.normal2) < -ray_direction_threshold)
 						continue;
 
-					// прослеживаем луч. Если он не пересекается ни с чем, ребра взаимно видимы
+					// РїСЂРѕСЃР»РµР¶РёРІР°РµРј Р»СѓС‡. Р•СЃР»Рё РѕРЅ РЅРµ РїРµСЂРµСЃРµРєР°РµС‚СЃСЏ РЅРё СЃ С‡РµРј, СЂРµР±СЂР° РІР·Р°РёРјРЅРѕ РІРёРґРёРјС‹
 					Skip skip;
 					Skip skip;
 					Ray_intersection intersection = face_tree.first_intersection(ray, skip);
@@ -413,17 +413,17 @@ void SoundScene::buildDiffractionEdgeGraph()
 				}
 			}
 
-			// Если ребро видно, добавляем его в список смежности
+			// Р•СЃР»Рё СЂРµР±СЂРѕ РІРёРґРЅРѕ, РґРѕР±Р°РІР»СЏРµРј РµРіРѕ РІ СЃРїРёСЃРѕРє СЃРјРµР¶РЅРѕСЃС‚Рё
 			if (visible)
 				diffr_edge_graph.diffr_edge_neighbors.push_back(e2);
 		}
-		// Устанавливаем количество найденных соседей для этого ребра
+		// РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РЅР°Р№РґРµРЅРЅС‹С… СЃРѕСЃРµРґРµР№ РґР»СЏ СЌС‚РѕРіРѕ СЂРµР±СЂР°
 		edge1.num_neighbors = (unsigned)(diffr_edge_graph.diffr_edge_neighbors.size() - edge1.list_offset);
 	}
 }
 
 //////////////////////////////////
-// Источник/приёмник
+// РСЃС‚РѕС‡РЅРёРє/РїСЂРёС‘РјРЅРёРє
 //////////////////////////////////
 
 void SoundScene::setSoundSource(PointSoundSource new_sound_source)
@@ -459,7 +459,7 @@ double SoundScene::pdfSound(const SoundPhongPathPoint& curr,
 double SoundScene::pdfListener(const SoundPhongPathPoint& curr,
 	const SoundPhongPathPoint& next)
 {
-	// пусть будет так
+	// РїСѓСЃС‚СЊ Р±СѓРґРµС‚ С‚Р°Рє
 	assert(curr.type == SoundPhongPathPoint::PointType::LISTENER);
 	Vector w = next.position - curr.position;
 	double inv_dist2 = 1 / w.squared_length();
@@ -473,7 +473,7 @@ double SoundScene::pdfListener(const SoundPhongPathPoint& curr,
 }
 
 //////////////////////////////////
-// Распространение звука
+// Р Р°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёРµ Р·РІСѓРєР°
 //////////////////////////////////
 
 double SoundScene::getDistanceAttenuation(double distance)
@@ -498,7 +498,7 @@ void SoundScene::propagateSound()
 	//std::cout << "faces_flag_map[" << fd << "] = " << faces_flag_map[fd] << ";";
 
 	SkipFew skip(fd);
-	// здесь внутри блока кода реализован алгоритм нахождения флагов за уже найденными флагами
+	// Р·РґРµСЃСЊ РІРЅСѓС‚СЂРё Р±Р»РѕРєР° РєРѕРґР° СЂРµР°Р»РёР·РѕРІР°РЅ Р°Р»РіРѕСЂРёС‚Рј РЅР°С…РѕР¶РґРµРЅРёСЏ С„Р»Р°РіРѕРІ Р·Р° СѓР¶Рµ РЅР°Р№РґРµРЅРЅС‹РјРё С„Р»Р°РіР°РјРё
 	while (faces_flag_map[fd] > 0)
 	{
 		addDiffractionPath(ray_direction, intersection);
@@ -515,7 +515,7 @@ void SoundScene::propagateSound()
 }
 
 //////////////////////////////////
-// Прямые пути
+// РџСЂСЏРјС‹Рµ РїСѓС‚Рё
 //////////////////////////////////
 
 bool SoundScene::addDirectPath()
@@ -532,7 +532,7 @@ bool SoundScene::addDirectPath()
 }
 
 //////////////////////////////////
-// Пути модели Фонга (дифузия + зерк отраж)
+// РџСѓС‚Рё РјРѕРґРµР»Рё Р¤РѕРЅРіР° (РґРёС„СѓР·РёСЏ + Р·РµСЂРє РѕС‚СЂР°Р¶)
 //////////////////////////////////
 
 bool SoundScene::addSpecularPath(double frequency)
@@ -543,13 +543,13 @@ bool SoundScene::addSpecularPath(double frequency)
 	double source_I = 1;
 	double source_pdf_pos = 1;
 	double source_pdf_dir = uniformSpherePdf();
-	double source_Le = source_I; // В моём случае
+	double source_Le = source_I; // Р’ РјРѕС‘Рј СЃР»СѓС‡Р°Рµ
 
-	double listener_We = 1; // всегда единица?
+	double listener_We = 1; // РІСЃРµРіРґР° РµРґРёРЅРёС†Р°?
 	double listener_pdf_pos = 1;
 	double listener_pdf_dir = uniformSpherePdf();
 
-	// bounces - количество отклонений луча.
+	// bounces - РєРѕР»РёС‡РµСЃС‚РІРѕ РѕС‚РєР»РѕРЅРµРЅРёР№ Р»СѓС‡Р°.
 
 	// listener propagation
 	Ray first_l_ray = 
@@ -587,71 +587,71 @@ bool SoundScene::addSpecularPath(double frequency)
 	// Eric Veach. 1997. Robust Monte Carlo methods for light transport simulation
 	// M. Pharr, G. Humphreys, J. Wenzel. 2016. Physically Based Rendering. From Theory To Implementation. Third Edition
 
-	int n_l = source_bounces + 1; // количество точек в пути от источника
-	int n_e = listener_bounces + 1; // количество точек в пути от приёмника
+	int n_l = source_bounces + 1; // РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕС‡РµРє РІ РїСѓС‚Рё РѕС‚ РёСЃС‚РѕС‡РЅРёРєР°
+	int n_e = listener_bounces + 1; // РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕС‡РµРє РІ РїСѓС‚Рё РѕС‚ РїСЂРёС‘РјРЅРёРєР°
 
-	double C_sum = 0; // итоговый вклад
+	double C_sum = 0; // РёС‚РѕРіРѕРІС‹Р№ РІРєР»Р°Рґ
 	double dist_sum = 0;
 
-	// не рассматриваем пути, где s1 == 0 ( нет точек от от источника - луч от приёмника сам попал на источник )
+	// РЅРµ СЂР°СЃСЃРјР°С‚СЂРёРІР°РµРј РїСѓС‚Рё, РіРґРµ s1 == 0 ( РЅРµС‚ С‚РѕС‡РµРє РѕС‚ РѕС‚ РёСЃС‚РѕС‡РЅРёРєР° - Р»СѓС‡ РѕС‚ РїСЂРёС‘РјРЅРёРєР° СЃР°Рј РїРѕРїР°Р» РЅР° РёСЃС‚РѕС‡РЅРёРє )
 	int s1_low_lim = 1;
 	for (int st_sum = 1 + s1_low_lim; st_sum <= n_l + n_e; st_sum++)
 	{
-		int s1; // s1 - количество рассматриваемых вершин в подпути от источника
-		int t1; // t1 - количество рассматриваемых вершин в подпути от приёмника
-		// Рассматриваем поути длиной len = st_sum = s1 + t1
+		int s1; // s1 - РєРѕР»РёС‡РµСЃС‚РІРѕ СЂР°СЃСЃРјР°С‚СЂРёРІР°РµРјС‹С… РІРµСЂС€РёРЅ РІ РїРѕРґРїСѓС‚Рё РѕС‚ РёСЃС‚РѕС‡РЅРёРєР°
+		int t1; // t1 - РєРѕР»РёС‡РµСЃС‚РІРѕ СЂР°СЃСЃРјР°С‚СЂРёРІР°РµРјС‹С… РІРµСЂС€РёРЅ РІ РїРѕРґРїСѓС‚Рё РѕС‚ РїСЂРёС‘РјРЅРёРєР°
+		// Р Р°СЃСЃРјР°С‚СЂРёРІР°РµРј РїРѕСѓС‚Рё РґР»РёРЅРѕР№ len = st_sum = s1 + t1
 		for (s1 = s1_low_lim; s1 <= n_l; s1++)
 		{
-			// мы рассматриваем путь:
+			// РјС‹ СЂР°СЃСЃРјР°С‚СЂРёРІР°РµРј РїСѓС‚СЊ:
 			// (x[0], x[1], ..., x[s1 - 1], x[s1], ..., x[k - 1], x[k]) =
 			// (x[0], x[1], ..., x[s1 - 1], x[s1], ..., x[s1 + t1 - 2], x[s1 + t1 - 1]) :=
 			// := (y[0], y[1], ..., y[s1 - 1]) U (z[t1 - 1], ..., z[1], z[0])
 			// k = s1 + t1 - 1
 
-			// вклад данной комбинации подпутей
+			// РІРєР»Р°Рґ РґР°РЅРЅРѕР№ РєРѕРјР±РёРЅР°С†РёРё РїРѕРґРїСѓС‚РµР№
 			double C_curr = 0;
-			// длина данной комбинации подпутей
+			// РґР»РёРЅР° РґР°РЅРЅРѕР№ РєРѕРјР±РёРЅР°С†РёРё РїРѕРґРїСѓС‚РµР№
 			double dist_curr = 0;
 
-			t1 = st_sum - s1; // количество вершин в пути от приёмника
+			t1 = st_sum - s1; // РєРѕР»РёС‡РµСЃС‚РІРѕ РІРµСЂС€РёРЅ РІ РїСѓС‚Рё РѕС‚ РїСЂРёС‘РјРЅРёРєР°
 			
-			// отбросить прямые пути (когда добавлю отдельный метод для их учёта)
+			// РѕС‚Р±СЂРѕСЃРёС‚СЊ РїСЂСЏРјС‹Рµ РїСѓС‚Рё (РєРѕРіРґР° РґРѕР±Р°РІР»СЋ РѕС‚РґРµР»СЊРЅС‹Р№ РјРµС‚РѕРґ РґР»СЏ РёС… СѓС‡С‘С‚Р°)
 			if (s1 == 1 && t1 == 1)
 				continue;
 
-			// отбрасываем пути, где в подпути приёмника ноль вершин
-			// отбрасываем пути, где в подпути приёмника вершин больше, чем их сгенерировалось по факту
+			// РѕС‚Р±СЂР°СЃС‹РІР°РµРј РїСѓС‚Рё, РіРґРµ РІ РїРѕРґРїСѓС‚Рё РїСЂРёС‘РјРЅРёРєР° РЅРѕР»СЊ РІРµСЂС€РёРЅ
+			// РѕС‚Р±СЂР°СЃС‹РІР°РµРј РїСѓС‚Рё, РіРґРµ РІ РїРѕРґРїСѓС‚Рё РїСЂРёС‘РјРЅРёРєР° РІРµСЂС€РёРЅ Р±РѕР»СЊС€Рµ, С‡РµРј РёС… СЃРіРµРЅРµСЂРёСЂРѕРІР°Р»РѕСЃСЊ РїРѕ С„Р°РєС‚Сѓ
 			if (t1 < 1 || t1 > n_e)
 			{
 				continue;
 			}
-			// отбрасываем пути, где конец подпути от источника не виден из конца подпути от приёмника
+			// РѕС‚Р±СЂР°СЃС‹РІР°РµРј РїСѓС‚Рё, РіРґРµ РєРѕРЅРµС† РїРѕРґРїСѓС‚Рё РѕС‚ РёСЃС‚РѕС‡РЅРёРєР° РЅРµ РІРёРґРµРЅ РёР· РєРѕРЅС†Р° РїРѕРґРїСѓС‚Рё РѕС‚ РїСЂРёС‘РјРЅРёРєР°
 			if (s1 != 0 && !isVisible(source_path[s1 - 1].position, listener_path[t1 - 1].position))
 			{
 				continue;
 			}
-			// отбрасываем пути, где концы подпутей от источника и от приёмника лежат на плоскостях, смотрящих в одну сторону
-			// (они не могут быть соединены)
+			// РѕС‚Р±СЂР°СЃС‹РІР°РµРј РїСѓС‚Рё, РіРґРµ РєРѕРЅС†С‹ РїРѕРґРїСѓС‚РµР№ РѕС‚ РёСЃС‚РѕС‡РЅРёРєР° Рё РѕС‚ РїСЂРёС‘РјРЅРёРєР° Р»РµР¶Р°С‚ РЅР° РїР»РѕСЃРєРѕСЃС‚СЏС…, СЃРјРѕС‚СЂСЏС‰РёС… РІ РѕРґРЅСѓ СЃС‚РѕСЂРѕРЅСѓ
+			// (РѕРЅРё РЅРµ РјРѕРіСѓС‚ Р±С‹С‚СЊ СЃРѕРµРґРёРЅРµРЅС‹)
 			if (s1 != 0 && source_path[s1 - 1].type == SoundPhongPathPoint::PointType::SURFACE
 				&& listener_path[t1 - 1].type == SoundPhongPathPoint::PointType::SURFACE
 				&& (source_path[s1 - 1].normal * listener_path[t1 - 1].normal) > DIRECTION_EQUALITY_THRESHOLD)
 			{
 				continue;
 			}
-			// отбрасываем случай, когда подпуть от источника не содержит вершин, а приёмник не попал в источник
-			// (т.к. этот случай рассматривается, только когда приёмник попал в исчточник)
+			// РѕС‚Р±СЂР°СЃС‹РІР°РµРј СЃР»СѓС‡Р°Р№, РєРѕРіРґР° РїРѕРґРїСѓС‚СЊ РѕС‚ РёСЃС‚РѕС‡РЅРёРєР° РЅРµ СЃРѕРґРµСЂР¶РёС‚ РІРµСЂС€РёРЅ, Р° РїСЂРёС‘РјРЅРёРє РЅРµ РїРѕРїР°Р» РІ РёСЃС‚РѕС‡РЅРёРє
+			// (С‚.Рє. СЌС‚РѕС‚ СЃР»СѓС‡Р°Р№ СЂР°СЃСЃРјР°С‚СЂРёРІР°РµС‚СЃСЏ, С‚РѕР»СЊРєРѕ РєРѕРіРґР° РїСЂРёС‘РјРЅРёРє РїРѕРїР°Р» РІ РёСЃС‡С‚РѕС‡РЅРёРє)
 			if (s1 == 0 && listener_path[t1 - 1].type != SoundPhongPathPoint::PointType::SOURCE)
 			{
 				continue;
 			}
-			// отбрасываем случай, когда приёмник попал в источник, а подпуть от источника содержит вернишы
-			// (т.к. этот случай рассматривается уже при s1==0 (подпуть источника не содержит вершин) )
+			// РѕС‚Р±СЂР°СЃС‹РІР°РµРј СЃР»СѓС‡Р°Р№, РєРѕРіРґР° РїСЂРёС‘РјРЅРёРє РїРѕРїР°Р» РІ РёСЃС‚РѕС‡РЅРёРє, Р° РїРѕРґРїСѓС‚СЊ РѕС‚ РёСЃС‚РѕС‡РЅРёРєР° СЃРѕРґРµСЂР¶РёС‚ РІРµСЂРЅРёС€С‹
+			// (С‚.Рє. СЌС‚РѕС‚ СЃР»СѓС‡Р°Р№ СЂР°СЃСЃРјР°С‚СЂРёРІР°РµС‚СЃСЏ СѓР¶Рµ РїСЂРё s1==0 (РїРѕРґРїСѓС‚СЊ РёСЃС‚РѕС‡РЅРёРєР° РЅРµ СЃРѕРґРµСЂР¶РёС‚ РІРµСЂС€РёРЅ) )
 			if (s1 != 0 && listener_path[t1 - 1].type == SoundPhongPathPoint::PointType::SOURCE)
 			{
 				continue;
 			}
 			
-			// суммарная дистанция
+			// СЃСѓРјРјР°СЂРЅР°СЏ РґРёСЃС‚Р°РЅС†РёСЏ
 			dist_curr = listener_path[t1 - 1].distance;
 			if (s1 != 0)
 				dist_curr += getVectorLength(source_path[s1 - 1].position - listener_path[t1 - 1].position)
@@ -683,7 +683,7 @@ bool SoundScene::addSpecularPath(double frequency)
 						SoundPhongPathPoint sampled = SoundPhongPathPoint(listener_path[0].position);
 						sampled.beta = source_weight / pdf;
 						sampled.pdf_fwd = 0;
-						// случай s1 > 1. ост отбросили выше
+						// СЃР»СѓС‡Р°Р№ s1 > 1. РѕСЃС‚ РѕС‚Р±СЂРѕСЃРёР»Рё РІС‹С€Рµ
 						L = qs.beta * qs.calcBRDF(
 							source_path[s1 - 2].position,
 							sampled.position) * sampled.beta;
@@ -701,7 +701,7 @@ bool SoundScene::addSpecularPath(double frequency)
 						SoundPhongPathPoint sampled = SoundPhongPathPoint(source_path[0].position);
 						sampled.beta = source_weight / pdf;
 						sampled.pdf_fwd = 0;
-						// случай t1 > 1 отбросили выше
+						// СЃР»СѓС‡Р°Р№ t1 > 1 РѕС‚Р±СЂРѕСЃРёР»Рё РІС‹С€Рµ
 						L = pt.beta * pt.calcBRDF(
 							listener_path[t1 - 2].position,
 							sampled.position)
@@ -780,7 +780,7 @@ int SoundScene::randomWalk(Ray first_ray, std::vector<SoundPhongPathPoint>& path
 	int max_depth, double pdf, double beta, double frequency)
 {
 	assert(!path.empty());
-	if (path.empty()) // проверка на дурака (по сути никогда не должен сюда заходить)
+	if (path.empty()) // РїСЂРѕРІРµСЂРєР° РЅР° РґСѓСЂР°РєР° (РїРѕ СЃСѓС‚Рё РЅРёРєРѕРіРґР° РЅРµ РґРѕР»Р¶РµРЅ СЃСЋРґР° Р·Р°С…РѕРґРёС‚СЊ)
 	{
 		path.push_back(SoundPhongPathPoint(first_ray.source()));
 		path[0].distance = 0;
@@ -816,27 +816,27 @@ int SoundScene::randomWalk(Ray first_ray, std::vector<SoundPhongPathPoint>& path
 			auto face_normal =
 				getVectorDirection(CGAL::Polygon_mesh_processing::compute_face_normal(intersection_fd, mesh));
 
-			// Вычисляем скалярное произведение нормали треугольника с направлением входящего луча
+			// Р’С‹С‡РёСЃР»СЏРµРј СЃРєР°Р»СЏСЂРЅРѕРµ РїСЂРѕРёР·РІРµРґРµРЅРёРµ РЅРѕСЂРјР°Р»Рё С‚СЂРµСѓРіРѕР»СЊРЅРёРєР° СЃ РЅР°РїСЂР°РІР»РµРЅРёРµРј РІС…РѕРґСЏС‰РµРіРѕ Р»СѓС‡Р°
 			double ray_dot_normal = ray_dir * face_normal;
 
-			// Инвертируем нормаль, если она направлена в ту же сторону, что и луч
+			// РРЅРІРµСЂС‚РёСЂСѓРµРј РЅРѕСЂРјР°Р»СЊ, РµСЃР»Рё РѕРЅР° РЅР°РїСЂР°РІР»РµРЅР° РІ С‚Сѓ Р¶Рµ СЃС‚РѕСЂРѕРЅСѓ, С‡С‚Рѕ Рё Р»СѓС‡
 			if (ray_dot_normal > 0.)
 			{
 				face_normal = -face_normal;
 				ray_dot_normal = -ray_dot_normal;
 			}
 
-			// Смещаем точку пересечения на небольшое расстояние, чтобы избежать проблем с точностью плавающей запятой
+			// РЎРјРµС‰Р°РµРј С‚РѕС‡РєСѓ РїРµСЂРµСЃРµС‡РµРЅРёСЏ РЅР° РЅРµР±РѕР»СЊС€РѕРµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ, С‡С‚РѕР±С‹ РёР·Р±РµР¶Р°С‚СЊ РїСЂРѕР±Р»РµРј СЃ С‚РѕС‡РЅРѕСЃС‚СЊСЋ РїР»Р°РІР°СЋС‰РµР№ Р·Р°РїСЏС‚РѕР№
 			intrersection_pos += face_normal * ray_offset;
 
-			// Суммируем общее расстояние вдоль пути
+			// РЎСѓРјРјРёСЂСѓРµРј РѕР±С‰РµРµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РІРґРѕР»СЊ РїСѓС‚Рё
 			total_distance += intersection_distance;
 
-			// Если общее расстояние превышает максимальное, останавливаем этот луч
+			// Р•СЃР»Рё РѕР±С‰РµРµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РїСЂРµРІС‹С€Р°РµС‚ РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ, РѕСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЌС‚РѕС‚ Р»СѓС‡
 			if (total_distance > max_distance)
 				break;
 
-			// Получаем свойства материала для пересеченного треугольника
+			// РџРѕР»СѓС‡Р°РµРј СЃРІРѕР№СЃС‚РІР° РјР°С‚РµСЂРёР°Р»Р° РґР»СЏ РїРµСЂРµСЃРµС‡РµРЅРЅРѕРіРѕ С‚СЂРµСѓРіРѕР»СЊРЅРёРєР°
 			SoundMaterial* material = &materials_list[faces_material_map[intersection_fd]];
 
 			path.push_back(SoundPhongPathPoint(intrersection_pos));
@@ -860,7 +860,7 @@ int SoundScene::randomWalk(Ray first_ray, std::vector<SoundPhongPathPoint>& path
 			double pdf_rev = 0, brdf_fwd = 0, brdf_rev = 0;
 			SoundPhongPathPoint::ReflectionType refl_type;
 
-			// Вычисляем новый отраженный луч с использованием BRDF материала
+			// Р’С‹С‡РёСЃР»СЏРµРј РЅРѕРІС‹Р№ РѕС‚СЂР°Р¶РµРЅРЅС‹Р№ Р»СѓС‡ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј BRDF РјР°С‚РµСЂРёР°Р»Р°
 			Vector out_dir = new_point.getPhongReflection(-ray_dir, refl_type,
 				pdf_fwd, pdf_rev, brdf_fwd, brdf_rev);
 
@@ -945,7 +945,7 @@ double SoundScene::calcMISWeight(
 }
 
 //////////////////////////////////
-// Дифр пути
+// Р”РёС„СЂ РїСѓС‚Рё
 //////////////////////////////////
 
 bool SoundScene::addDiffractionPath(Vector ray_direction, Ray_intersection intersection)
@@ -1001,32 +1001,32 @@ bool SoundScene::recursiveDiffraction(ImpulseResponse& curr_IR, const BigDiffrac
 	const Point last_listener_image_position = last_path_point.position;
 	const Point listener_image_position = this_path_point.position;
 
-	// Определяем, на какой стороне ребра находится приёмник
+	// РћРїСЂРµРґРµР»СЏРµРј, РЅР° РєР°РєРѕР№ СЃС‚РѕСЂРѕРЅРµ СЂРµР±СЂР° РЅР°С…РѕРґРёС‚СЃСЏ РїСЂРёС‘РјРЅРёРє
 	double plane1_distance = getSignedDistanceTo(diffr_edge.normal1, diffr_edge.getStart(), last_listener_image_position);
 	double plane2_distance = getSignedDistanceTo(diffr_edge.normal2, diffr_edge.getStart(), last_listener_image_position);
 
 	bool listener_orientation = plane1_distance > plane2_distance && plane1_distance > 0.;
 
-	// Получаем свободную вершину треугольника на той же стороне ребра, что и приёмник
+	// РџРѕР»СѓС‡Р°РµРј СЃРІРѕР±РѕРґРЅСѓСЋ РІРµСЂС€РёРЅСѓ С‚СЂРµСѓРіРѕР»СЊРЅРёРєР° РЅР° С‚РѕР№ Р¶Рµ СЃС‚РѕСЂРѕРЅРµ СЂРµР±СЂР°, С‡С‚Рѕ Рё РїСЂРёС‘РјРЅРёРє
 	Point triangle_free_vertex = listener_orientation ?
 		diffr_edge.getFreeVertex1() : diffr_edge.getFreeVertex2();
 
-	// Вычисляем плоскость границы теневой области для ребра и последней позиции источника изображения
+	// Р’С‹С‡РёСЃР»СЏРµРј РїР»РѕСЃРєРѕСЃС‚СЊ РіСЂР°РЅРёС†С‹ С‚РµРЅРµРІРѕР№ РѕР±Р»Р°СЃС‚Рё РґР»СЏ СЂРµР±СЂР° Рё РїРѕСЃР»РµРґРЅРµР№ РїРѕР·РёС†РёРё РёСЃС‚РѕС‡РЅРёРєР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
 	Plane shadow_boundary(last_listener_image_position, diffr_edge.getStart(), diffr_edge.getStart() + diffr_edge.getAxis());
 
-	// Убеждаемся, что нормаль плоскости границы тени указывает в правильном направлении
+	// РЈР±РµР¶РґР°РµРјСЃСЏ, С‡С‚Рѕ РЅРѕСЂРјР°Р»СЊ РїР»РѕСЃРєРѕСЃС‚Рё РіСЂР°РЅРёС†С‹ С‚РµРЅРё СѓРєР°Р·С‹РІР°РµС‚ РІ РїСЂР°РІРёР»СЊРЅРѕРј РЅР°РїСЂР°РІР»РµРЅРёРё
 	if (getSignedDistanceTo(shadow_boundary, last_listener_image_position, triangle_free_vertex) < 0.)
 		shadow_boundary = Plane(last_listener_image_position, diffr_edge.getStart() + diffr_edge.getAxis(), diffr_edge.getStart());
 
-	// Получаем плоскость, которая обращена к приёмнику
+	// РџРѕР»СѓС‡Р°РµРј РїР»РѕСЃРєРѕСЃС‚СЊ, РєРѕС‚РѕСЂР°СЏ РѕР±СЂР°С‰РµРЅР° Рє РїСЂРёС‘РјРЅРёРєСѓ
 	const Plane& listener_plane = listener_orientation ? diffr_edge.getPlane1() : diffr_edge.getPlane2();
 	this_path_point.listener_plane = listener_plane;
 
-	// Получаем плоскость, которая определяет границу треугольника на противоположной стороне ребра
+	// РџРѕР»СѓС‡Р°РµРј РїР»РѕСЃРєРѕСЃС‚СЊ, РєРѕС‚РѕСЂР°СЏ РѕРїСЂРµРґРµР»СЏРµС‚ РіСЂР°РЅРёС†Сѓ С‚СЂРµСѓРіРѕР»СЊРЅРёРєР° РЅР° РїСЂРѕС‚РёРІРѕРїРѕР»РѕР¶РЅРѕР№ СЃС‚РѕСЂРѕРЅРµ СЂРµР±СЂР°
 	const Plane& opposite_plane = listener_orientation ? diffr_edge.getPlane2() : diffr_edge.getPlane1();
 	this_path_point.source_plane = opposite_plane;
 
-	// Определяем, находится ли источник в теневой области, проверяя его относительно граничных плоскостей
+	// РћРїСЂРµРґРµР»СЏРµРј, РЅР°С…РѕРґРёС‚СЃСЏ Р»Рё РёСЃС‚РѕС‡РЅРёРє РІ С‚РµРЅРµРІРѕР№ РѕР±Р»Р°СЃС‚Рё, РїСЂРѕРІРµСЂСЏСЏ РµРіРѕ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ РіСЂР°РЅРёС‡РЅС‹С… РїР»РѕСЃРєРѕСЃС‚РµР№
 	bool source_in_shadow_region = getSignedDistanceTo(shadow_boundary, last_listener_image_position, source_position) > /*-epsilon_h*/ 0 &&
 		getSignedDistanceTo(opposite_plane, diffr_edge.getStart(), source_position) > /*-epsilon_h*/ 0;
 
@@ -1042,7 +1042,7 @@ bool SoundScene::recursiveDiffraction(ImpulseResponse& curr_IR, const BigDiffrac
 
 		const unsigned last_point_index = curr_IR.diffraction_points_list.size() - 1;
 
-		// Проверяем путь к приёмнику, который еще не был проверен, чтобы убедиться, что он действителен
+		// РџСЂРѕРІРµСЂСЏРµРј РїСѓС‚СЊ Рє РїСЂРёС‘РјРЅРёРєСѓ, РєРѕС‚РѕСЂС‹Р№ РµС‰Рµ РЅРµ Р±С‹Р» РїСЂРѕРІРµСЂРµРЅ, С‡С‚РѕР±С‹ СѓР±РµРґРёС‚СЊСЃСЏ, С‡С‚Рѕ РѕРЅ РґРµР№СЃС‚РІРёС‚РµР»РµРЅ
 		for (point_index = curr_IR.last_valid_index; point_index < last_point_index; point_index++)
 		{
 			assert(point_index < curr_IR.diffraction_points_list.size());
@@ -1050,7 +1050,7 @@ bool SoundScene::recursiveDiffraction(ImpulseResponse& curr_IR, const BigDiffrac
 			assert(point_index + 1 < curr_IR.diffraction_points_list.size());
 			SoundDiffractionPathPoint& this_point = curr_IR.diffraction_points_list[point_index + 1];
 
-			// Вычисляем направление от последней позиции источника изображения до текущей
+			// Р’С‹С‡РёСЃР»СЏРµРј РЅР°РїСЂР°РІР»РµРЅРёРµ РѕС‚ РїРѕСЃР»РµРґРЅРµР№ РїРѕР·РёС†РёРё РёСЃС‚РѕС‡РЅРёРєР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РґРѕ С‚РµРєСѓС‰РµР№
 			Vector direction = this_point.position - last_point.position;
 			double distance = getVectorLength(direction);
 
@@ -1080,11 +1080,11 @@ bool SoundScene::recursiveDiffraction(ImpulseResponse& curr_IR, const BigDiffrac
 					
 			}
 
-			// Суммируем общее расстояние вдоль пути.
+			// РЎСѓРјРјРёСЂСѓРµРј РѕР±С‰РµРµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РІРґРѕР»СЊ РїСѓС‚Рё.
 			this_point.distance = last_point.distance + distance;
 
 			/*
-			// Вычисляем отклик пути для последнего ребра, если оно было
+			// Р’С‹С‡РёСЃР»СЏРµРј РѕС‚РєР»РёРє РїСѓС‚Рё РґР»СЏ РїРѕСЃР»РµРґРЅРµРіРѕ СЂРµР±СЂР°, РµСЃР»Рё РѕРЅРѕ Р±С‹Р»Рѕ
 			if (point_index > 0)
 			{
 				const SoundDiffractionPathPoint& last_last_point = curr_IR.diffraction_points_list[point_index - 1];
@@ -1110,7 +1110,7 @@ bool SoundScene::recursiveDiffraction(ImpulseResponse& curr_IR, const BigDiffrac
 
 		if (valid)
 		{
-			// Вычисляем вектор от текущей позиции источника изображения до приёмника
+			// Р’С‹С‡РёСЃР»СЏРµРј РІРµРєС‚РѕСЂ РѕС‚ С‚РµРєСѓС‰РµР№ РїРѕР·РёС†РёРё РёСЃС‚РѕС‡РЅРёРєР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РґРѕ РїСЂРёС‘РјРЅРёРєР°
 			Vector source_direction = source_position - listener_image_position;
 			double source_distance = getVectorLength(source_direction);
 
@@ -1118,7 +1118,7 @@ bool SoundScene::recursiveDiffraction(ImpulseResponse& curr_IR, const BigDiffrac
 			{
 				source_direction /= source_distance;
 
-				// Проверяем путь от позиции изображения источника до приёмника, чтобы убедиться, что он свободен
+				// РџСЂРѕРІРµСЂСЏРµРј РїСѓС‚СЊ РѕС‚ РїРѕР·РёС†РёРё РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РёСЃС‚РѕС‡РЅРёРєР° РґРѕ РїСЂРёС‘РјРЅРёРєР°, С‡С‚РѕР±С‹ СѓР±РµРґРёС‚СЊСЃСЏ, С‡С‚Рѕ РѕРЅ СЃРІРѕР±РѕРґРµРЅ
 				bool source_visible = true;
 				Ray ray_si2l(
 					listener_image_position + source_direction * diffraction_epsilon,
@@ -1179,13 +1179,13 @@ bool SoundScene::recursiveDiffraction(ImpulseResponse& curr_IR, const BigDiffrac
 
 	}
 
-	// Возвращаемся, если достигнута максимальная глубина
+	// Р’РѕР·РІСЂР°С‰Р°РµРјСЃСЏ, РµСЃР»Рё РґРѕСЃС‚РёРіРЅСѓС‚Р° РјР°РєСЃРёРјР°Р»СЊРЅР°СЏ РіР»СѓР±РёРЅР°
 	if (depth >= max_diffraction_order || diffr_edge_graph.edges.size() == 0)
 	{
 		return false;
 	}
 
-	// Проверяем соседние ребра на наличие путей дифракции более высокого порядка
+	// РџСЂРѕРІРµСЂСЏРµРј СЃРѕСЃРµРґРЅРёРµ СЂРµР±СЂР° РЅР° РЅР°Р»РёС‡РёРµ РїСѓС‚РµР№ РґРёС„СЂР°РєС†РёРё Р±РѕР»РµРµ РІС‹СЃРѕРєРѕРіРѕ РїРѕСЂСЏРґРєР°
 	const DiffractionEdgeGraph* graph = &diffr_edge_graph;
 	const unsigned num_neighbors = diffr_edge.num_neighbors;
 	const unsigned neighbor_list_start = diffr_edge.list_offset;
@@ -1193,10 +1193,10 @@ bool SoundScene::recursiveDiffraction(ImpulseResponse& curr_IR, const BigDiffrac
 
 	for (unsigned n = neighbor_list_start; n < neighbor_list_end; n++)
 	{
-		// Рассматриваем соседнее ребро
+		// Р Р°СЃСЃРјР°С‚СЂРёРІР°РµРј СЃРѕСЃРµРґРЅРµРµ СЂРµР±СЂРѕ
 		const BigDiffractionEdge* neighbor = graph->getEdgeNeighbor(n);
 
-		// Вычисляем точку ближайшего приближения линии от приёмника к источнику и линии ребра
+		// Р’С‹С‡РёСЃР»СЏРµРј С‚РѕС‡РєСѓ Р±Р»РёР¶Р°Р№С€РµРіРѕ РїСЂРёР±Р»РёР¶РµРЅРёСЏ Р»РёРЅРёРё РѕС‚ РїСЂРёС‘РјРЅРёРєР° Рє РёСЃС‚РѕС‡РЅРёРєСѓ Рё Р»РёРЅРёРё СЂРµР±СЂР°
 		double edge_t = 0.;
 		if (std::abs(listener_to_source_direction * neighbor->getAxis()) < 0.999)
 			edge_t = computePointOfClosestApproach(neighbor->getStart(), neighbor->getAxis(),
@@ -1204,23 +1204,23 @@ bool SoundScene::recursiveDiffraction(ImpulseResponse& curr_IR, const BigDiffrac
 		else
 			edge_t = 0.5 * neighbor->getLength();
 
-		// Убеждаемся, что ближайшая точка лежит в пределах ребра. Пропускаем недопустимые ребра
+		// РЈР±РµР¶РґР°РµРјСЃСЏ, С‡С‚Рѕ Р±Р»РёР¶Р°Р№С€Р°СЏ С‚РѕС‡РєР° Р»РµР¶РёС‚ РІ РїСЂРµРґРµР»Р°С… СЂРµР±СЂР°. РџСЂРѕРїСѓСЃРєР°РµРј РЅРµРґРѕРїСѓСЃС‚РёРјС‹Рµ СЂРµР±СЂР°
 		if (edge_t < 0. || edge_t > neighbor->getLength())
 			continue;
 
-		// Вычисляем ближайшую точку на ребре. Это новая позиция изображения слушателя
+		// Р’С‹С‡РёСЃР»СЏРµРј Р±Р»РёР¶Р°Р№С€СѓСЋ С‚РѕС‡РєСѓ РЅР° СЂРµР±СЂРµ. Р­С‚Рѕ РЅРѕРІР°СЏ РїРѕР·РёС†РёСЏ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ СЃР»СѓС€Р°С‚РµР»СЏ
 		Point next_listener_image_position = neighbor->getStart() + neighbor->getAxis() * edge_t;
 		next_listener_image_position += neighbor->flag_direction * diffraction_epsilon;
 
-		// Определяем, находится ли эта точка в предыдущем клине дифракции
+		// РћРїСЂРµРґРµР»СЏРµРј, РЅР°С…РѕРґРёС‚СЃСЏ Р»Рё СЌС‚Р° С‚РѕС‡РєР° РІ РїСЂРµРґС‹РґСѓС‰РµРј РєР»РёРЅРµ РґРёС„СЂР°РєС†РёРё
 		bool neighbor_in_wedge = getSignedDistanceTo(shadow_boundary, diffr_edge.getStart(), next_listener_image_position) > -epsilon_h &&
 			getSignedDistanceTo(opposite_plane, diffr_edge.getStart(), next_listener_image_position) > -epsilon_h;
 
 
-		// Рекурсивно находим пути дифракции для допустимых ребер
+		// Р РµРєСѓСЂСЃРёРІРЅРѕ РЅР°С…РѕРґРёРј РїСѓС‚Рё РґРёС„СЂР°РєС†РёРё РґР»СЏ РґРѕРїСѓСЃС‚РёРјС‹С… СЂРµР±РµСЂ
 		if (neighbor_in_wedge)
 		{
-			// Добавляем следующую точку дифракции в массив дифр точек
+			// Р”РѕР±Р°РІР»СЏРµРј СЃР»РµРґСѓСЋС‰СѓСЋ С‚РѕС‡РєСѓ РґРёС„СЂР°РєС†РёРё РІ РјР°СЃСЃРёРІ РґРёС„СЂ С‚РѕС‡РµРє
 			curr_IR.diffraction_points_list.push_back(SoundDiffractionPathPoint(next_listener_image_position,
 				neighbor->col, neighbor));
 
@@ -1229,7 +1229,7 @@ bool SoundScene::recursiveDiffraction(ImpulseResponse& curr_IR, const BigDiffrac
 
 			recursiveDiffraction(curr_IR, *neighbor, depth + 1);
 
-			// Удаляем точку дифракции из массива дифр точек
+			// РЈРґР°Р»СЏРµРј С‚РѕС‡РєСѓ РґРёС„СЂР°РєС†РёРё РёР· РјР°СЃСЃРёРІР° РґРёС„СЂ С‚РѕС‡РµРє
 			curr_IR.diffraction_points_list.pop_back();
 
 			if (curr_IR.last_valid_index >= depth)
@@ -1264,7 +1264,7 @@ bool SoundScene::alreadyContainsPath(unsigned diffr_edge_col)
 }
 
 //////////////////////////////////
-// Флаги
+// Р¤Р»Р°РіРё
 //////////////////////////////////
 
 bool SoundScene::addDiffractionFlags()
@@ -1295,7 +1295,7 @@ bool SoundScene::addDiffractionFlags()
 }
 
 //////////////////////////////////
-// Вспомогателььные методы
+// Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊСЊРЅС‹Рµ РјРµС‚РѕРґС‹
 //////////////////////////////////
 
 bool SoundScene::isVisible(const Point& p1, const Point& p2)
@@ -1361,7 +1361,7 @@ void SoundScene::getSceneBoundingBox(Point& min_point, Point& max_point)
 	min_point = Point(bbox.xmin(), bbox.ymin(), bbox.zmin());
 	max_point = Point(bbox.xmax(), bbox.ymax(), bbox.zmax());
 }
-// Функция для проверки видимости обратной стороны
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ РїСЂРѕРІРµСЂРєРё РІРёРґРёРјРѕСЃС‚Рё РѕР±СЂР°С‚РЅРѕР№ СЃС‚РѕСЂРѕРЅС‹
 bool SoundScene::isBackSideVisible(const Point& point)
 {
 	double back_side_visible_epsilon = 0.0001;
@@ -1381,7 +1381,7 @@ bool SoundScene::isBackSideVisible(const Point& point)
 		Point centroid = CGAL::centroid(p_tr[0], p_tr[1], p_tr[2]);
 		unsigned intersect_cnt = 0;
 
-		// Создание луча из точки point к центру треугольника
+		// РЎРѕР·РґР°РЅРёРµ Р»СѓС‡Р° РёР· С‚РѕС‡РєРё point Рє С†РµРЅС‚СЂСѓ С‚СЂРµСѓРіРѕР»СЊРЅРёРєР°
 		for (int i = 0; i < 3; i++)
 		{
 			Point moved_centroid = centroid + (p_tr[i] - centroid) * (random_amplitude * randomUniformNextVal() + back_side_visible_epsilon);
@@ -1396,7 +1396,7 @@ bool SoundScene::isBackSideVisible(const Point& point)
 
 			Ray ray(moved_point, direction);
 
-			// Поиск пересечений луча с поверхностью
+			// РџРѕРёСЃРє РїРµСЂРµСЃРµС‡РµРЅРёР№ Р»СѓС‡Р° СЃ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊСЋ
 			FlagSkip skip(*this, Mesh::null_face(), true);
 			auto intersection = face_tree.first_intersection(ray, skip);
 			if (!intersection)
@@ -1409,7 +1409,7 @@ bool SoundScene::isBackSideVisible(const Point& point)
 					normal = CGAL::Polygon_mesh_processing::compute_face_normal(intersected_fd, mesh);
 					if (normal * direction > 0)
 					{
-						intersect_cnt++;// Точка видит обратную сторону поверхности
+						intersect_cnt++;// РўРѕС‡РєР° РІРёРґРёС‚ РѕР±СЂР°С‚РЅСѓСЋ СЃС‚РѕСЂРѕРЅСѓ РїРѕРІРµСЂС…РЅРѕСЃС‚Рё
 					}
 				}
 			}
@@ -1425,7 +1425,7 @@ bool SoundScene::isBackSideVisible(const Point& point)
 }
 
 //////////////////////////////////
-// Дополнительно для графики
+// Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕ РґР»СЏ РіСЂР°С„РёРєРё
 //////////////////////////////////
 
 void SoundScene::addArrow(Point start, Point end)
@@ -1489,7 +1489,7 @@ void SoundScene::removeLastArrow()
 }
 
 //////////////////////////////////
-// Сохранение и загрузка
+// РЎРѕС…СЂР°РЅРµРЅРёРµ Рё Р·Р°РіСЂСѓР·РєР°
 //////////////////////////////////
 
 std::string SoundScene::readInputFilename()
@@ -1503,7 +1503,7 @@ std::string SoundScene::readInputFilename()
 	}
 
 	std::string filename;
-	file >> filename; // Считываем слово из файла
+	file >> filename; // РЎС‡РёС‚С‹РІР°РµРј СЃР»РѕРІРѕ РёР· С„Р°Р№Р»Р°
 
 	if (file.fail())
 	{
@@ -1567,7 +1567,7 @@ void SoundScene::getInputParams(std::string& scene_name, std::string& answer,
 		return;
 	}
 
-	file >> scene_name; // Считываем слово из файла
+	file >> scene_name; // РЎС‡РёС‚С‹РІР°РµРј СЃР»РѕРІРѕ РёР· С„Р°Р№Р»Р°
 
 	if (file.fail())
 	{
@@ -1598,7 +1598,7 @@ void SoundScene::getInputParams(std::string& scene_name, std::string& answer,
 }
 void SoundScene::saveFrequencies(std::string filename)
 {
-	// Сохранение частот
+	// РЎРѕС…СЂР°РЅРµРЅРёРµ С‡Р°СЃС‚РѕС‚
 	std::ofstream freq_out(filename + "_frequencies");
 	if (freq_out.is_open())
 	{
@@ -1744,7 +1744,7 @@ bool SoundScene::loadDiffractionEdges(std::string filename)
 		in.read(reinterpret_cast<char*>(&key), sizeof(key));
 		in.read(reinterpret_cast<char*>(&value), sizeof(value));
 		if (in)
-		{ // Проверка на успешное чтение
+		{ // РџСЂРѕРІРµСЂРєР° РЅР° СѓСЃРїРµС€РЅРѕРµ С‡С‚РµРЅРёРµ
 			halfedge_descriptor hed(key);
 			diffr_map[hed] = value;
 		}
@@ -1768,7 +1768,7 @@ bool SoundScene::loadDiffractionEdges(std::string filename)
 		in.read(reinterpret_cast<char*>(&key), sizeof(key));
 		in.read(reinterpret_cast<char*>(&value), sizeof(value));
 		if (in)
-		{ // Проверка на успешное чтение
+		{ // РџСЂРѕРІРµСЂРєР° РЅР° СѓСЃРїРµС€РЅРѕРµ С‡С‚РµРЅРёРµ
 			halfedge_descriptor hed(key);
 			halfedge_col_map[hed] = value;
 		}
@@ -1824,7 +1824,7 @@ bool SoundScene::loadDiffractionEdges(std::string filename)
 		}
 
 		if (in)
-		{ // Проверка на успешное чтение
+		{ // РџСЂРѕРІРµСЂРєР° РЅР° СѓСЃРїРµС€РЅРѕРµ С‡С‚РµРЅРёРµ
 			edge1.flag_direction = Vector(v_arr[0]);
 			edge1.normal1 = Vector(v_arr[1]);
 			edge1.normal2 = Vector(v_arr[2]);
@@ -1861,7 +1861,7 @@ bool SoundScene::loadDiffractionEdgeGraph(std::string filename)
 
 
 			if (in)
-			{ // Проверка на успешное чтение
+			{ // РџСЂРѕРІРµСЂРєР° РЅР° СѓСЃРїРµС€РЅРѕРµ С‡С‚РµРЅРёРµ
 				edge1.list_offset = list_offset;
 				edge1.num_neighbors = num_neighbors;
 			}
@@ -1873,7 +1873,7 @@ bool SoundScene::loadDiffractionEdgeGraph(std::string filename)
 			in.read(reinterpret_cast<char*>(&col), sizeof(col));
 
 			if (in)
-			{ // Проверка на успешное чтение
+			{ // РџСЂРѕРІРµСЂРєР° РЅР° СѓСЃРїРµС€РЅРѕРµ С‡С‚РµРЅРёРµ
 				diffr_edge_graph.diffr_edge_neighbors.push_back(col);
 			}
 		}
@@ -1889,16 +1889,16 @@ void SoundScene::clearSavedIRs(std::string filename)
 	
 	if (std::remove((filename + "_diffr_IRs").c_str()) != 0 || std::remove((filename + "_phong_IRs").c_str()) != 0)
 	{
-		perror("Ошибка при удалении файлов");
+		perror("РћС€РёР±РєР° РїСЂРё СѓРґР°Р»РµРЅРёРё С„Р°Р№Р»РѕРІ");
 	}
 	else
 	{
-		printf("Файлы успешно удалены\n");
+		printf("Р¤Р°Р№Р»С‹ СѓСЃРїРµС€РЅРѕ СѓРґР°Р»РµРЅС‹\n");
 	}
 }
 
 //////////////////////////////////
-// Анализ результатов
+// РђРЅР°Р»РёР· СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ
 //////////////////////////////////
 
 std::vector<double> SoundScene::calculateAverageEnergyPerStep(const std::vector<std::pair<double, double>>& received_phong_IRs_archived, double dt)
@@ -1926,7 +1926,7 @@ std::vector<double> SoundScene::calculateAverageEnergyPerStep(const std::vector<
 			}
 			else
 			{
-				average_energy_per_step.push_back(0.0); // если нет данных в интервале, считаем среднее как 0
+				average_energy_per_step.push_back(0.0); // РµСЃР»Рё РЅРµС‚ РґР°РЅРЅС‹С… РІ РёРЅС‚РµСЂРІР°Р»Рµ, СЃС‡РёС‚Р°РµРј СЃСЂРµРґРЅРµРµ РєР°Рє 0
 			}
 			sum_energy = pair.second;
 			count = 1;
@@ -1940,7 +1940,7 @@ std::vector<double> SoundScene::calculateAverageEnergyPerStep(const std::vector<
 	}
 	else
 	{
-		average_energy_per_step.push_back(0.0); // если нет данных в последнем интервале, считаем среднее как 0
+		average_energy_per_step.push_back(0.0); // РµСЃР»Рё РЅРµС‚ РґР°РЅРЅС‹С… РІ РїРѕСЃР»РµРґРЅРµРј РёРЅС‚РµСЂРІР°Р»Рµ, СЃС‡РёС‚Р°РµРј СЃСЂРµРґРЅРµРµ РєР°Рє 0
 	}
 
 	return average_energy_per_step;
