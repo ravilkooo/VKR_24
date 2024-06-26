@@ -1,4 +1,4 @@
-#ifndef FREQBANDRESPONSE_H
+﻿#ifndef FREQBANDRESPONSE_H
 #define FREQBANDRESPONSE_H
 
 #include <complex>

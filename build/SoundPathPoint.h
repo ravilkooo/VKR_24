@@ -1,4 +1,4 @@
-#ifndef SOUNDPATHPOINT_H
+﻿#ifndef SOUNDPATHPOINT_H
 #define SOUNDPATHPOINT_H
 
 #include "utils.h"

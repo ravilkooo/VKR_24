@@ -1,4 +1,4 @@
-#include "FrequencyBandResponse.h"
+п»ї#include "FrequencyBandResponse.h"
 
 FrequencyBandResponse::FrequencyBandResponse() :
 	attenuations(std::vector<double>(num_frequencies, 1.))
@@ -296,9 +296,9 @@ FrequencyBandResponse computeUTDAttenuation_2nd_order(
 
 	// ....................
 	/*			..
-			 .. SB_1 (не угол, а плоскость)
+			 .. SB_1 (РЅРµ СѓРіРѕР», Р° РїР»РѕСЃРєРѕСЃС‚СЊ)
 		 ..	D1. . . . .	D2 . . . . L_imaginary
-	   ..  /  \		   / | . SB_2 (не угол, а плоскость)
+	   ..  /  \		   / | . SB_2 (РЅРµ СѓРіРѕР», Р° РїР»РѕСЃРєРѕСЃС‚СЊ)
 	 S	  /    \	  /  |	 .
 		 /      \	 /   |	   L
 
@@ -399,7 +399,7 @@ FrequencyBandResponse computeUTDAttenuation_N_order(
 		 /      \	 /   |	   L
 
 	*/
-	// первый коэф затухания
+	// РїРµСЂРІС‹Р№ РєРѕСЌС„ Р·Р°С‚СѓС…Р°РЅРёСЏ
 	{
 
 		SoundDiffractionPathPoint& diffr_point_curr = diffraction_points[1];
@@ -492,7 +492,7 @@ FrequencyBandResponse computeUTDAttenuation_N_order(
 		}
 	}
 
-	// остальные коэфф-ты затухания кроме последнего
+	// РѕСЃС‚Р°Р»СЊРЅС‹Рµ РєРѕСЌС„С„-С‚С‹ Р·Р°С‚СѓС…Р°РЅРёСЏ РєСЂРѕРјРµ РїРѕСЃР»РµРґРЅРµРіРѕ
 	for (int i = 2; i < diffraction_points.size()-1; i++)
 	{
 		SoundDiffractionPathPoint& diffr_point_nextcurr = diffraction_points[i - 1];
@@ -583,15 +583,15 @@ FrequencyBandResponse computeUTDAttenuation_N_order(
 	}
 	// ....................
 	/*			..
-			 .. SB_1 (не угол, а плоскость)
+			 .. SB_1 (РЅРµ СѓРіРѕР», Р° РїР»РѕСЃРєРѕСЃС‚СЊ)
 		 ..	D1. . . . .	D2 . . . . L_imaginary
-	   ..  /  \		   / | . SB_2 (не угол, а плоскость)
+	   ..  /  \		   / | . SB_2 (РЅРµ СѓРіРѕР», Р° РїР»РѕСЃРєРѕСЃС‚СЊ)
 	 S	  /    \	  /  |	 .
 		 /      \	 /   |	   L
 
 	*/
 
-	// последний коэф затухания
+	// РїРѕСЃР»РµРґРЅРёР№ РєРѕСЌС„ Р·Р°С‚СѓС…Р°РЅРёСЏ
 	{
 		SoundDiffractionPathPoint& diffr_point_nextcurr = diffraction_points[diffraction_points.size() - 2];
 		SoundDiffractionPathPoint& diffr_point_curr = diffraction_points[diffraction_points.size() - 1];

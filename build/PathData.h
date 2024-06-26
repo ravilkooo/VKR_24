@@ -1,4 +1,4 @@
-#ifndef PATHDATA_H
+﻿#ifndef PATHDATA_H
 #define PATHDATA_H
 
 #include "utils.h"

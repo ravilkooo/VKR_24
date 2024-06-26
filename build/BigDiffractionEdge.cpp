@@ -1,4 +1,4 @@
-#include "BigDiffractionEdge.h"
+﻿#include "BigDiffractionEdge.h"
 
 double BigDiffractionEdge::getLength() const
 {

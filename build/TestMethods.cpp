@@ -1,7 +1,7 @@
-#include <CGAL/Simple_cartesian.h>
+п»ї#include <CGAL/Simple_cartesian.h>
 #include <CGAL/Surface_mesh.h>
 
-// Для рисования
+// Р”Р»СЏ СЂРёСЃРѕРІР°РЅРёСЏ
 #include <CGAL/draw_surface_mesh.h>
 #include <fstream>
 #include <locale>
@@ -29,16 +29,16 @@ int test_computePointOfClosestApproach()
 
 	double min_diffraction_edge_length = 0.5;
 
-	// просто я взял из головы
+	// РїСЂРѕСЃС‚Рѕ СЏ РІР·СЏР» РёР· РіРѕР»РѕРІС‹
 	double diffaction_flag_dir_variation_threshold = 0.95;
 
-	// помечаем диффр рёбра
+	// РїРѕРјРµС‡Р°РµРј РґРёС„С„СЂ СЂС‘Р±СЂР°
 	scene.markDiffractionEdges();
 
-	// объединяем вместе в одно большие
+	// РѕР±СЉРµРґРёРЅСЏРµРј РІРјРµСЃС‚Рµ РІ РѕРґРЅРѕ Р±РѕР»СЊС€РёРµ
 	scene.combineDiffractionEdges();
 
-	// построение графа видимости рёбер
+	// РїРѕСЃС‚СЂРѕРµРЅРёРµ РіСЂР°С„Р° РІРёРґРёРјРѕСЃС‚Рё СЂС‘Р±РµСЂ
 	std::cout << "buildDiffractionEdgeGraph\n";
 	scene.buildDiffractionEdgeGraph();
 
@@ -100,16 +100,16 @@ int test_checkSourceInShadowRegion()
 
 	double min_diffraction_edge_length = 0.5;
 
-	// просто я взял из головы
+	// РїСЂРѕСЃС‚Рѕ СЏ РІР·СЏР» РёР· РіРѕР»РѕРІС‹
 	double diffaction_flag_dir_variation_threshold = 0.95;
 
-	// помечаем диффр рёбра
+	// РїРѕРјРµС‡Р°РµРј РґРёС„С„СЂ СЂС‘Р±СЂР°
 	scene.markDiffractionEdges();
 
-	// объединяем вместе в одно большие
+	// РѕР±СЉРµРґРёРЅСЏРµРј РІРјРµСЃС‚Рµ РІ РѕРґРЅРѕ Р±РѕР»СЊС€РёРµ
 	scene.combineDiffractionEdges();
 
-	// построение графа видимости рёбер
+	// РїРѕСЃС‚СЂРѕРµРЅРёРµ РіСЂР°С„Р° РІРёРґРёРјРѕСЃС‚Рё СЂС‘Р±РµСЂ
 	std::cout << "buildDiffractionEdgeGraph\n";
 	scene.buildDiffractionEdgeGraph();
 
@@ -264,18 +264,18 @@ int test_PhongReflection()
 
 	double min_diffraction_edge_length = 0.5;
 
-	// просто я взял из головы
+	// РїСЂРѕСЃС‚Рѕ СЏ РІР·СЏР» РёР· РіРѕР»РѕРІС‹
 	double diffaction_flag_dir_variation_threshold = 0.95;
 
-	// помечаем диффр рёбра
+	// РїРѕРјРµС‡Р°РµРј РґРёС„С„СЂ СЂС‘Р±СЂР°
 	scene.markDiffractionEdges();
 
-	// объединяем вместе в одно большие
+	// РѕР±СЉРµРґРёРЅСЏРµРј РІРјРµСЃС‚Рµ РІ РѕРґРЅРѕ Р±РѕР»СЊС€РёРµ
 	scene.combineDiffractionEdges();
 
 	std::cout << scene.diffr_edge_graph.edges.size() << "!!!\n";
 
-	// построение графа видимости рёбер
+	// РїРѕСЃС‚СЂРѕРµРЅРёРµ РіСЂР°С„Р° РІРёРґРёРјРѕСЃС‚Рё СЂС‘Р±РµСЂ
 	std::cout << "buildDiffractionEdgeGraph\n";
 	scene.buildDiffractionEdgeGraph();
 
@@ -378,12 +378,12 @@ int test_saveLoad(std::string filename, bool save_data, bool test_graph = false)
 		scene.readMeshFromFile(full_filename);
 		scene.mapMaterials();
 
-		// помечаем диффр рёбра
+		// РїРѕРјРµС‡Р°РµРј РґРёС„С„СЂ СЂС‘Р±СЂР°
 		scene.markDiffractionEdges();
 
-		// объединяем вместе в одно большие
+		// РѕР±СЉРµРґРёРЅСЏРµРј РІРјРµСЃС‚Рµ РІ РѕРґРЅРѕ Р±РѕР»СЊС€РёРµ
 		scene.combineDiffractionEdges();
-		// сохраняем
+		// СЃРѕС…СЂР°РЅСЏРµРј
 		std::cout << "saveDiffractionEdges\n";
 		scene.saveDiffractionEdges(filename);
 
@@ -396,14 +396,14 @@ int test_saveLoad(std::string filename, bool save_data, bool test_graph = false)
 
 		if (test_graph)
 		{
-			// построение графа видимости рёбер
+			// РїРѕСЃС‚СЂРѕРµРЅРёРµ РіСЂР°С„Р° РІРёРґРёРјРѕСЃС‚Рё СЂС‘Р±РµСЂ
 			std::cout << "buildDiffractionEdgeGraph\n";
 			scene.buildDiffractionEdgeGraph();
-			// сохраняем
+			// СЃРѕС…СЂР°РЅСЏРµРј
 			std::cout << "saveDiffractionEdgeGraph\n";
 			scene.saveDiffractionEdgeGraph(filename);
 
-			// для проверки
+			// РґР»СЏ РїСЂРѕРІРµСЂРєРё
 			for (int i = 0; i < scene.total_num_edges; i++)
 			{
 				std::cout << i << ":\t";
@@ -436,7 +436,7 @@ int test_saveLoad(std::string filename, bool save_data, bool test_graph = false)
 		scene.readMeshFromFile(full_filename);
 		scene.mapMaterials();
 
-		// подгружаем
+		// РїРѕРґРіСЂСѓР¶Р°РµРј
 		std::cout << "loadDiffractionEdges\n";
 		scene.loadDiffractionEdges(filename);
 
@@ -449,11 +449,11 @@ int test_saveLoad(std::string filename, bool save_data, bool test_graph = false)
 
 		if (test_graph)
 		{
-			// подгружаем
+			// РїРѕРґРіСЂСѓР¶Р°РµРј
 			std::cout << "loadDiffractionEdgeGraph\n";
 			scene.loadDiffractionEdgeGraph(filename);
 
-			// для проверки
+			// РґР»СЏ РїСЂРѕРІРµСЂРєРё
 			for (int i = 0; i < scene.total_num_edges; i++)
 			{
 				std::cout << i << ":\t";
@@ -500,12 +500,12 @@ int test_isPointInside(std::string filename)
 
 	if (answer != "y")
 	{
-		// помечаем диффр рёбра
+		// РїРѕРјРµС‡Р°РµРј РґРёС„С„СЂ СЂС‘Р±СЂР°
 		scene.markDiffractionEdges();
 
-		// объединяем вместе в одно большие
+		// РѕР±СЉРµРґРёРЅСЏРµРј РІРјРµСЃС‚Рµ РІ РѕРґРЅРѕ Р±РѕР»СЊС€РёРµ
 		scene.combineDiffractionEdges();
-		// сохраняем
+		// СЃРѕС…СЂР°РЅСЏРµРј
 		scene.saveDiffractionEdges(filename);
 
 		std::cout << scene.diffr_edge_graph.edges.size() << "\n";
@@ -513,26 +513,26 @@ int test_isPointInside(std::string filename)
 		// Draw!
 		// CGAL::draw(scene.mesh);
 
-		// построение графа видимости рёбер
+		// РїРѕСЃС‚СЂРѕРµРЅРёРµ РіСЂР°С„Р° РІРёРґРёРјРѕСЃС‚Рё СЂС‘Р±РµСЂ
 		std::cout << "buildDiffractionEdgeGraph\n";
 		scene.buildDiffractionEdgeGraph();
 
-		// сохраняем
+		// СЃРѕС…СЂР°РЅСЏРµРј
 		scene.saveDiffractionEdgeGraph(filename);
 	}
 	else
 	{
-		// подгружаем
+		// РїРѕРґРіСЂСѓР¶Р°РµРј
 		scene.loadDiffractionEdges(filename);
 		scene.loadDiffractionEdgeGraph(filename);
 	}
 
 	double min_diffraction_edge_length = 0.5;
 
-	// просто я взял из головы
+	// РїСЂРѕСЃС‚Рѕ СЏ РІР·СЏР» РёР· РіРѕР»РѕРІС‹
 	double diffaction_flag_dir_variation_threshold = 0.95;
 
-	// для проверки
+	// РґР»СЏ РїСЂРѕРІРµСЂРєРё
 	std::cout << scene.diffr_edge_graph.edges.size() << "; "
 		<< scene.diffr_edge_graph.diffr_edge_neighbors.size() << "\n";
 
@@ -578,10 +578,10 @@ int test_flags(int argc, char* argv[])
 	bool load_bde = false;
 	std::cout << "Load latest save? (y/n) " << answer << "\n";
 
-	// помечаем диффр рёбра
+	// РїРѕРјРµС‡Р°РµРј РґРёС„С„СЂ СЂС‘Р±СЂР°
 	scene.markDiffractionEdges();
 
-	// объединяем вместе в одно большие
+	// РѕР±СЉРµРґРёРЅСЏРµРј РІРјРµСЃС‚Рµ РІ РѕРґРЅРѕ Р±РѕР»СЊС€РёРµ
 	scene.combineDiffractionEdges();
 
 	std::cout << scene.diffr_edge_graph.edges.size() << "\n";
@@ -589,7 +589,7 @@ int test_flags(int argc, char* argv[])
 	// Draw!
 	CGAL::draw(scene.mesh);
 
-	// построение графа видимости рёбер
+	// РїРѕСЃС‚СЂРѕРµРЅРёРµ РіСЂР°С„Р° РІРёРґРёРјРѕСЃС‚Рё СЂС‘Р±РµСЂ
 	std::cout << "buildDiffractionEdgeGraph\n";
 
 	std::cout << scene.diffr_edge_graph.edges.size() << "\n";
@@ -597,11 +597,11 @@ int test_flags(int argc, char* argv[])
 	// Draw!
 	// CGAL::draw(scene.mesh);
 
-	// построение графа видимости рёбер
+	// РїРѕСЃС‚СЂРѕРµРЅРёРµ РіСЂР°С„Р° РІРёРґРёРјРѕСЃС‚Рё СЂС‘Р±РµСЂ
 	std::cout << "buildDiffractionEdgeGraph\n";
 	scene.buildDiffractionEdgeGraph();
 
-	// для проверки
+	// РґР»СЏ РїСЂРѕРІРµСЂРєРё
 	std::cout << scene.diffr_edge_graph.edges.size() << "; "
 		<< scene.diffr_edge_graph.diffr_edge_neighbors.size() << "\n";
 
@@ -646,12 +646,12 @@ int edge_anim(int argc, char* argv[])
 	bool load_bde = false;
 	std::cout << "Load latest save? (y/n) " << answer << "\n";
 	{
-		// помечаем диффр рёбра
+		// РїРѕРјРµС‡Р°РµРј РґРёС„С„СЂ СЂС‘Р±СЂР°
 		scene.markDiffractionEdges();
 
-		// объединяем вместе в одно большие
+		// РѕР±СЉРµРґРёРЅСЏРµРј РІРјРµСЃС‚Рµ РІ РѕРґРЅРѕ Р±РѕР»СЊС€РёРµ
 		scene.combineDiffractionEdges();
-		// сохраняем
+		// СЃРѕС…СЂР°РЅСЏРµРј
 		scene.saveDiffractionEdges(scene_name);
 
 		std::cout << scene.diffr_edge_graph.edges.size() << "\n";
@@ -659,11 +659,11 @@ int edge_anim(int argc, char* argv[])
 		// Draw!
 		// CGAL::draw(scene.mesh);
 
-		// построение графа видимости рёбер
+		// РїРѕСЃС‚СЂРѕРµРЅРёРµ РіСЂР°С„Р° РІРёРґРёРјРѕСЃС‚Рё СЂС‘Р±РµСЂ
 		std::cout << "buildDiffractionEdgeGraph\n";
 		scene.buildDiffractionEdgeGraph();
 
-		// сохраняем
+		// СЃРѕС…СЂР°РЅСЏРµРј
 		scene.saveDiffractionEdgeGraph(scene_name);
 	}
 
@@ -672,10 +672,10 @@ int edge_anim(int argc, char* argv[])
 
 	double min_diffraction_edge_length = 0.5;
 
-	// просто я взял из головы
+	// РїСЂРѕСЃС‚Рѕ СЏ РІР·СЏР» РёР· РіРѕР»РѕРІС‹
 	double diffaction_flag_dir_variation_threshold = 0.95;
 
-	// для проверки
+	// РґР»СЏ РїСЂРѕРІРµСЂРєРё
 	std::cout << scene.diffr_edge_graph.edges.size() << "; "
 		<< scene.diffr_edge_graph.diffr_edge_neighbors.size() << "\n";
 

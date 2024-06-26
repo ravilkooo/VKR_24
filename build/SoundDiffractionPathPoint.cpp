@@ -1,4 +1,4 @@
-#include "SoundDiffractionPathPoint.h"
+﻿#include "SoundDiffractionPathPoint.h"
 
 SoundDiffractionPathPoint::SoundDiffractionPathPoint()
 {

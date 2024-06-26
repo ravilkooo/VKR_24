@@ -1,4 +1,4 @@
-#ifndef SOUNDMATERIAL_H
+п»ї#ifndef SOUNDMATERIAL_H
 #define SOUNDMATERIAL_H
 
 #include <string>
@@ -6,7 +6,7 @@
 #include "utils.h"
 #include "FrequencyBandResponse.h"
 
-// Для отсеивания отражений почти паралельных отражающей плоскости
+// Р”Р»СЏ РѕС‚СЃРµРёРІР°РЅРёСЏ РѕС‚СЂР°Р¶РµРЅРёР№ РїРѕС‡С‚Рё РїР°СЂР°Р»РµР»СЊРЅС‹С… РѕС‚СЂР°Р¶Р°СЋС‰РµР№ РїР»РѕСЃРєРѕСЃС‚Рё
 #define PHONG_EPSILON 0.01
 
 class SoundMaterial
@@ -22,13 +22,13 @@ public:
 
 	std::pair<double, double> getClosestParameters(double frequency);
 
-	// гладкий бетон
+	// РіР»Р°РґРєРёР№ Р±РµС‚РѕРЅ
 	static const SoundMaterial CONCRETE;
 
-	// снег
+	// СЃРЅРµРі
 	static const SoundMaterial SNOW;
 
-	// мой глушащий материал
+	// РјРѕР№ РіР»СѓС€Р°С‰РёР№ РјР°С‚РµСЂРёР°Р»
 	static const SoundMaterial SILENCE;
 
 	// shininess

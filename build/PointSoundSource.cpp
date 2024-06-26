@@ -1,4 +1,4 @@
-#include "PointSoundSource.h"
+﻿#include "PointSoundSource.h"
 
 Vector PointSoundSource::sample_ray()
 {

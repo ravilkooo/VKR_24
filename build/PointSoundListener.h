@@ -1,4 +1,4 @@
-#ifndef POINTSOUNDLISTENER_H
+п»ї#ifndef POINTSOUNDLISTENER_H
 #define POINTSOUNDLISTENER_H
 
 #include "utils.h"
@@ -8,7 +8,7 @@
 class PointSoundListener
 {
 public:
-	// позиция источника
+	// РїРѕР·РёС†РёСЏ РёСЃС‚РѕС‡РЅРёРєР°
 	Point position;
 	std::vector<double> frequencies;
 
@@ -17,16 +17,16 @@ public:
 
 	double sensivity = 1.;
 
-	// пускаем луч в рандомном направлении
+	// РїСѓСЃРєР°РµРј Р»СѓС‡ РІ СЂР°РЅРґРѕРјРЅРѕРј РЅР°РїСЂР°РІР»РµРЅРёРё
 	Vector sample_ray(bool is_2d);
 
-	// дошедшие сигналы
+	// РґРѕС€РµРґС€РёРµ СЃРёРіРЅР°Р»С‹
 	std::vector<PathData> received_diffraction_IRs;
 	std::vector<std::pair<double, double>> received_phong_IRs_archived;
 	std::vector<std::vector<std::pair<double, double>>> received_diffr_IRs_archived;
 	std::vector<std::pair<double, double>> received_direct_IRs_archived;
 
-	// счётчик сигналов каждого типа
+	// СЃС‡С‘С‚С‡РёРє СЃРёРіРЅР°Р»РѕРІ РєР°Р¶РґРѕРіРѕ С‚РёРїР°
 	std::vector<unsigned> IR_cnt;
 
 	PointSoundListener();

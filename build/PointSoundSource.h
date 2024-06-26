@@ -1,4 +1,4 @@
-#ifndef POINTSOUNDSOURCE_H
+п»ї#ifndef POINTSOUNDSOURCE_H
 #define POINTSOUNDSOURCE_H
 
 #include "utils.h"
@@ -6,12 +6,12 @@
 class PointSoundSource
 {
 public:
-	// позиция источника
+	// РїРѕР·РёС†РёСЏ РёСЃС‚РѕС‡РЅРёРєР°
 	Point position;
 
 	double power = 1.;
 	
-	// пускаем луч в рандомном направлении
+	// РїСѓСЃРєР°РµРј Р»СѓС‡ РІ СЂР°РЅРґРѕРјРЅРѕРј РЅР°РїСЂР°РІР»РµРЅРёРё
 	Vector sample_ray();
 
 	PointSoundSource();

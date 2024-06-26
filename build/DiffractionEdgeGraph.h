@@ -1,4 +1,4 @@
-#ifndef DIFFRACTIONEDGEGRAPH_H
+﻿#ifndef DIFFRACTIONEDGEGRAPH_H
 #define DIFFRACTIONEDGEGRAPH_H
 
 #include "utils.h"

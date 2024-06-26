@@ -1,4 +1,4 @@
-#include "DiffractionEdgeGraph.h"
+﻿#include "DiffractionEdgeGraph.h"
 
 const BigDiffractionEdge* DiffractionEdgeGraph::getEdgeNeighbor(unsigned edgeNeighborIndex) const
 {

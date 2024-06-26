@@ -1,4 +1,4 @@
-#include "PathData.h"
+﻿#include "PathData.h"
 
 PathData::PathData() :
 	path_type(PathType::SPECULAR),

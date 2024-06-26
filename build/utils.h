@@ -1,4 +1,4 @@
-#ifndef UTILS_H
+п»ї#ifndef UTILS_H
 #define UTILS_H
 
 #include <cmath>
@@ -30,7 +30,7 @@ typedef boost::graph_traits<Mesh>::halfedge_descriptor		halfedge_descriptor;
 typedef boost::graph_traits<Mesh>::edge_descriptor          edge_descriptor;
 typedef boost::graph_traits<Mesh>::face_descriptor			face_descriptor;
 
-// для нахождения пересечений с мэшем
+// РґР»СЏ РЅР°С…РѕР¶РґРµРЅРёСЏ РїРµСЂРµСЃРµС‡РµРЅРёР№ СЃ РјСЌС€РµРј
 typedef Kernel::Ray_3 Ray;
 
 template <typename T>

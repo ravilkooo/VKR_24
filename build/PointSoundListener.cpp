@@ -1,4 +1,4 @@
-#include "PointSoundListener.h"
+п»ї#include "PointSoundListener.h"
 
 Vector PointSoundListener::sample_ray(bool is_2d)
 {
@@ -76,20 +76,20 @@ void PointSoundListener::archivePhongIRs()
 }
 void PointSoundListener::saveToStream(std::ofstream& out, std::vector<std::pair<double, double>>& received_IRs_archived) const
 {
-	// Сохранение позиции
+	// РЎРѕС…СЂР°РЅРµРЅРёРµ РїРѕР·РёС†РёРё
 	out.write(reinterpret_cast<const char*>(&(position.x())), sizeof((position.x())));
 	out.write(reinterpret_cast<const char*>(&(position.y())), sizeof((position.y())));
 	out.write(reinterpret_cast<const char*>(&(position.z())), sizeof((position.z())));
 
-	// Сохранение индекса
+	// РЎРѕС…СЂР°РЅРµРЅРёРµ РёРЅРґРµРєСЃР°
 	out.write(reinterpret_cast<const char*>(&x_idx), sizeof(x_idx));
 	out.write(reinterpret_cast<const char*>(&y_idx), sizeof(y_idx));
 
-	// Сохранение размера вектора
+	// РЎРѕС…СЂР°РЅРµРЅРёРµ СЂР°Р·РјРµСЂР° РІРµРєС‚РѕСЂР°
 	size_t size = received_IRs_archived.size();
 	out.write(reinterpret_cast<const char*>(&size), sizeof(size));
 
-	// Сохранение пар значений
+	// РЎРѕС…СЂР°РЅРµРЅРёРµ РїР°СЂ Р·РЅР°С‡РµРЅРёР№
 	out.write(reinterpret_cast<const char*>(received_IRs_archived.data()), sizeof(std::pair<double, double>) * size);
 }
 void PointSoundListener::appendListenerToFile(const std::string& filename)

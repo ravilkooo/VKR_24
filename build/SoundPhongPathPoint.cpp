@@ -1,4 +1,4 @@
-#include "SoundPhongPathPoint.h"
+п»ї#include "SoundPhongPathPoint.h"
 
 SoundPhongPathPoint::SoundPhongPathPoint()
 {
@@ -104,15 +104,15 @@ Vector SoundPhongPathPoint::getPhongReflection(Vector in_dir, ReflectionType& re
 	//cos_alpha_rev = ideal_spec_refl_rev * in_dir;
 	//cos_alpha_rev = std::max(0., cos_alpha_rev);
 
-	//// расчёт _brdf_fwd
+	//// СЂР°СЃС‡С‘С‚ _brdf_fwd
 	//double diffuse_brdf = inv_Pi;
-	//double I_M = calc_I_M(cos_alpha, material->n_specular); // коэффициент нормализации
+	//double I_M = calc_I_M(cos_alpha, material->n_specular); // РєРѕСЌС„С„РёС†РёРµРЅС‚ РЅРѕСЂРјР°Р»РёР·Р°С†РёРё
 	//double specular_brdf = std::pow(cos_alpha, material->n_specular) / I_M;
 	//_brdf_fwd = ro_d* diffuse_brdf + ro_s * specular_brdf;
 
-	//// расчёт brdf_rev
+	//// СЂР°СЃС‡С‘С‚ brdf_rev
 	//double diffuse_brdf_rev = inv_Pi;
-	//double I_M_rev = calc_I_M(cos_alpha_rev, material->n_specular); // коэффициент нормализации
+	//double I_M_rev = calc_I_M(cos_alpha_rev, material->n_specular); // РєРѕСЌС„С„РёС†РёРµРЅС‚ РЅРѕСЂРјР°Р»РёР·Р°С†РёРё
 	//double specular_brdf_rev = std::pow(cos_alpha_rev, material->n_specular) / I_M_rev;
 	//_brdf_rev = ro_d * diffuse_brdf_rev + ro_s * specular_brdf_rev;
 
@@ -145,16 +145,16 @@ double SoundPhongPathPoint::calcPhongPdf(const Vector& in_dir, const Vector& out
 		double cos_alpha = std::abs(ideal_spec_refl * out_dir);
 		cos_alpha = std::max(0., cos_alpha);
 
-		// расчёт pdf_fwd для specular
+		// СЂР°СЃС‡С‘С‚ pdf_fwd РґР»СЏ specular
 		pdf_specular = hemispherePhongSpecularPdf(cos_alpha, material->n_specular);
-		pdf_specular *= ro_s; // закоментил, т.к. должно быть затухание / (ro_d + ro_s);
+		pdf_specular *= ro_s; // Р·Р°РєРѕРјРµРЅС‚РёР», С‚.Рє. РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р·Р°С‚СѓС…Р°РЅРёРµ / (ro_d + ro_s);
 	}
-	// закоментил, т.к. одно и тоже направление может быть получено разными типами отражения
+	// Р·Р°РєРѕРјРµРЅС‚РёР», С‚.Рє. РѕРґРЅРѕ Рё С‚РѕР¶Рµ РЅР°РїСЂР°РІР»РµРЅРёРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїРѕР»СѓС‡РµРЅРѕ СЂР°Р·РЅС‹РјРё С‚РёРїР°РјРё РѕС‚СЂР°Р¶РµРЅРёСЏ
 	// else if (refl_type == ReflectionType::DIFFUSE || refl_type == ReflectionType::BOTH)
 	{
-		// расчёт pdf_fwd для diffuse
+		// СЂР°СЃС‡С‘С‚ pdf_fwd РґР»СЏ diffuse
 		pdf_diffuse = hemispherePhongDiffusePdf(cos_theta_i);
-		pdf_diffuse *= ro_d; // закоментил, т.к. должно быть затухание / (ro_d + ro_s);
+		pdf_diffuse *= ro_d; // Р·Р°РєРѕРјРµРЅС‚РёР», С‚.Рє. РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р·Р°С‚СѓС…Р°РЅРёРµ / (ro_d + ro_s);
 	}
 	pdf = pdf_specular + pdf_diffuse;
 	assert(pdf > 0);
@@ -245,7 +245,7 @@ double SoundPhongPathPoint::calcBRDF(const Vector& in_dir, const Vector& out_dir
 	Vector ideal_spec_refl = 2 * normal * cos_theta_i - in_dir;
 	double cos_alpha = ideal_spec_refl * out_dir;
 	cos_alpha = std::max(0., cos_alpha);
-	double I_M = calc_I_M(cos_alpha, material->n_specular); // коэффициент нормализации
+	double I_M = calc_I_M(cos_alpha, material->n_specular); // РєРѕСЌС„С„РёС†РёРµРЅС‚ РЅРѕСЂРјР°Р»РёР·Р°С†РёРё
 	double specular_brdf = std::pow(cos_alpha, material->n_specular) / I_M;
 
 	return ro_d * diffuse_brdf + ro_s * specular_brdf;
@@ -307,7 +307,7 @@ double SoundPhongPathPoint::calcPdfProj(const SoundPhongPathPoint* prev, const S
 	else if (type == SoundPhongPathPoint::PointType::SOURCE
 		|| type == SoundPhongPathPoint::PointType::LISTENER)
 	{
-		// они напрямую соединяются, потому что не поверхность, а точка
+		// РѕРЅРё РЅР°РїСЂСЏРјСѓСЋ СЃРѕРµРґРёРЅСЏСЋС‚СЃСЏ, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РЅРµ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ, Р° С‚РѕС‡РєР°
 	}
 	return pdf;
 }

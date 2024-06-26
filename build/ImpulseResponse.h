@@ -1,4 +1,4 @@
-#ifndef IMPULSERESPONSE_H
+п»ї#ifndef IMPULSERESPONSE_H
 #define IMPULSERESPONSE_H
 
 #include "utils.h"
@@ -8,25 +8,25 @@
 class ImpulseResponse
 {
 public:
-	// количество частот
+	// РєРѕР»РёС‡РµСЃС‚РІРѕ С‡Р°СЃС‚РѕС‚
 	unsigned num_frequencies = 3;
 
-	// значения затуханий для каждой частоты
+	// Р·РЅР°С‡РµРЅРёСЏ Р·Р°С‚СѓС…Р°РЅРёР№ РґР»СЏ РєР°Р¶РґРѕР№ С‡Р°СЃС‚РѕС‚С‹
 	FrequencyBandResponse fbr;
 
-	// расстояние, прошедешее лучом
+	// СЂР°СЃСЃС‚РѕСЏРЅРёРµ, РїСЂРѕС€РµРґРµС€РµРµ Р»СѓС‡РѕРј
 	double distance = 0;
 
-	// тип луча/пути
+	// С‚РёРї Р»СѓС‡Р°/РїСѓС‚Рё
 	IRType ir_type;
 
-	// путь
+	// РїСѓС‚СЊ
 	std::vector<SoundDiffractionPathPoint> diffraction_points_list;
 
-	// значения для каждой точки пути
+	// Р·РЅР°С‡РµРЅРёСЏ РґР»СЏ РєР°Р¶РґРѕР№ С‚РѕС‡РєРё РїСѓС‚Рё
 	std::vector<FrequencyBandResponse> point_responses;
 
-	// получить время получения данного луча
+	// РїРѕР»СѓС‡РёС‚СЊ РІСЂРµРјСЏ РїРѕР»СѓС‡РµРЅРёСЏ РґР°РЅРЅРѕРіРѕ Р»СѓС‡Р°
 	double getTravelingTime(double speed_of_sound);
 
 	size_t last_valid_index;

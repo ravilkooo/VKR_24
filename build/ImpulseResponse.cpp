@@ -1,4 +1,4 @@
-#include "ImpulseResponse.h"
+п»ї#include "ImpulseResponse.h"
 
 double ImpulseResponse::getTravelingTime(double speed_of_sound)
 {
@@ -26,7 +26,7 @@ ImpulseResponse::ImpulseResponse(const ImpulseResponse& IR)
 	ir_type(IR.ir_type),
 	diffraction_points_list(IR.diffraction_points_list)
 {
-	// Копирование объектов из diffraction_points_list
+	// РљРѕРїРёСЂРѕРІР°РЅРёРµ РѕР±СЉРµРєС‚РѕРІ РёР· diffraction_points_list
 	for (auto point : IR.diffraction_points_list)
 	{
 		diffraction_points_list.push_back(point);

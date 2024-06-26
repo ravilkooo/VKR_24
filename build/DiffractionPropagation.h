@@ -1,4 +1,4 @@
-#ifndef DIFFRACTIONPROP_H
+﻿#ifndef DIFFRACTIONPROP_H
 #define DIFFRACTIONPROP_H
 
 #include "utils.h"

@@ -1,4 +1,4 @@
-#include "utils.h"
+п»ї#include "utils.h"
 
 
 double getVectorLength(Vector v)
@@ -122,10 +122,10 @@ std::function<Vector(Vector)> getRotateFunc(const Vector& dir)
 
 Point rotatePointAroundAxis(const Point& axis_point, const Vector& axis_direction, const Point& point_to_rotate, double angle)
 {
-	// Нормируем направление оси
+	// РќРѕСЂРјРёСЂСѓРµРј РЅР°РїСЂР°РІР»РµРЅРёРµ РѕСЃРё
 	Vector norm_axis_direction = axis_direction / std::sqrt(axis_direction.squared_length());
 
-	// Создаем матрицу поворота
+	// РЎРѕР·РґР°РµРј РјР°С‚СЂРёС†Сѓ РїРѕРІРѕСЂРѕС‚Р°
 	double c = std::cos(angle);
 	double s = std::sin(angle);
 	double t = 1 - c;
@@ -139,17 +139,17 @@ Point rotatePointAroundAxis(const Point& axis_point, const Vector& axis_directio
 		{t * x * z - s * y,  t * y * z + s * x,  t * z * z + c}
 	};
 
-	// Вычитаем точку оси, чтобы перенести её в начало координат
+	// Р’С‹С‡РёС‚Р°РµРј С‚РѕС‡РєСѓ РѕСЃРё, С‡С‚РѕР±С‹ РїРµСЂРµРЅРµСЃС‚Рё РµС‘ РІ РЅР°С‡Р°Р»Рѕ РєРѕРѕСЂРґРёРЅР°С‚
 	Vector translated_point = point_to_rotate - CGAL::ORIGIN - (axis_point - CGAL::ORIGIN);
 
-	// Поворачиваем точку
+	// РџРѕРІРѕСЂР°С‡РёРІР°РµРј С‚РѕС‡РєСѓ
 	Vector rotated_vector(
 		rotation_matrix[0][0] * translated_point.x() + rotation_matrix[0][1] * translated_point.y() + rotation_matrix[0][2] * translated_point.z(),
 		rotation_matrix[1][0] * translated_point.x() + rotation_matrix[1][1] * translated_point.y() + rotation_matrix[1][2] * translated_point.z(),
 		rotation_matrix[2][0] * translated_point.x() + rotation_matrix[2][1] * translated_point.y() + rotation_matrix[2][2] * translated_point.z()
 	);
 
-	// Переносим точку обратно в исходную позицию
+	// РџРµСЂРµРЅРѕСЃРёРј С‚РѕС‡РєСѓ РѕР±СЂР°С‚РЅРѕ РІ РёСЃС…РѕРґРЅСѓСЋ РїРѕР·РёС†РёСЋ
 	Point rotated_point = CGAL::ORIGIN + rotated_vector + (axis_point - CGAL::ORIGIN);
 
 	return rotated_point;

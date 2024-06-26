@@ -1,4 +1,4 @@
-#ifndef SOUNDPHONGPATHPOINT_H
+п»ї#ifndef SOUNDPHONGPATHPOINT_H
 #define SOUNDPHONGPATHPOINT_H
 
 #include "utils.h"
@@ -12,9 +12,9 @@ public:
 	enum class PointType : unsigned
 	{
 		UNDEFINED = 0,
-		// точечный источник
+		// С‚РѕС‡РµС‡РЅС‹Р№ РёСЃС‚РѕС‡РЅРёРє
 		SOURCE = 1,
-		// точечный приёмник
+		// С‚РѕС‡РµС‡РЅС‹Р№ РїСЂРёС‘РјРЅРёРє
 		LISTENER = 2,
 		SURFACE = 3
 	};
